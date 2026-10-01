@@ -1,6 +1,8 @@
 {
-    "nara": {
-        "type": "http",
-        "url": "https://api.naratix.ai/mcp"
+    "mcpServers": {
+        "Naratix": {
+            "type": "http",
+            "url": "https://api.naratix.ai/mcp"
+        }
     }
 }

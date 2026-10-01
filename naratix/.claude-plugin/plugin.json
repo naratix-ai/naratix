@@ -1,15 +1,27 @@
 {
     "name": "naratix",
-    "version": "0.4.0",
-    "description": "Set up Nara product-content generation for your Naratix shop: an interview-driven wizard authors description templates, title templates, and category mappings — connected to your shop or as paste-ready artifacts.",
+    "displayName": "Naratix",
+    "version": "1.0.0",
+    "description": "Get every product in your catalogue ready to sell, from your AI assistant. Naratix brings in products and taxonomies from Mirakl, VTEX or a file, places products in categories, enriches their attributes, improves their photos, writes titles, descriptions and SEO text, checks quality and audits the taxonomy. You review the results in the chat, and Naratix sends them on to your marketplace, store or PIM. It asks before it launches work or sends anything.",
     "author": {
         "name": "Naratix"
     },
+    "homepage": "https://naratix.ai",
+    "repository": "https://github.com/naratix-ai/naratix",
+    "license": "MIT",
     "keywords": [
         "naratix",
-        "nara",
-        "templates",
+        "ecommerce",
+        "product catalogue",
+        "product data",
+        "product attributes",
+        "categories",
         "product descriptions",
-        "ecommerce"
+        "seo",
+        "product images",
+        "data quality",
+        "mirakl",
+        "vtex",
+        "pim"
     ]
 }

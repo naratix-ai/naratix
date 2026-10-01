@@ -68,7 +68,7 @@ Mention the safety: products with few or no images simply show fewer or none —
 
 ## Stored shape
 
-These answers persist under exactly these names — over MCP via `save-generation-profile`, or standalone into `~/.naratix/generation-profile.json`:
+These answers persist under exactly these names — over MCP via `save-generation-profile`, or standalone in the profile block the customer keeps:
 
 ```json
 {

@@ -35,7 +35,7 @@ Each distinct `name` becomes a required LLM response field. `name` must be word 
 - The closing tag is exactly `@end`.
 - Loop-body variables use `{!! $var !!}` / `{!! $var['field'] !!}` and are HTML-escaped.
 - Scalar-array loops: `@foreach({{array<string>::highlights}} as $h) <li>{!! $h !!}</li> @end`.
-- Free per-iteration counters on object items: `{!! $item['__iteration'] !!}` (1-based), `{!! $item['__index'] !!}` (0-based), `{!! $item['__iteration_padded'] !!}` (`01`, `02`, …) — handy for anchors and ids. The LLM is never asked for them.
+- Built-in per-iteration counters on object items: `{!! $item['__iteration'] !!}` (1-based), `{!! $item['__index'] !!}` (0-based), `{!! $item['__iteration_padded'] !!}` (`01`, `02`, …) — handy for anchors and ids. The LLM is never asked for them.
 - Loops nest; counters stay independent.
 
 ## Image constructs — loops only

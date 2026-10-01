@@ -10,7 +10,7 @@ One example is workable, but say the trade-off plainly: every fixed-versus-varia
 
 ### Links instead of pastes
 
-Product-page URLs are the cheapest way to collect examples — "give me links to two or three similar products" costs the customer nothing. The ladder, in order:
+Product-page URLs are the easiest way to collect examples — "give me links to two or three similar products" takes the customer a moment. The ladder, in order:
 
 1. **Connected: `fetch-shop-page`** (format `html`). It downloads through Naratix's scraping infrastructure, so bot walls that block a plain fetch are handled. Extract the description region — the block carrying the long-form product copy — with its classes, and discard the page chrome (navigation, header, footer, scripts). The look mostly lives in linked CSS: take the main `<link rel="stylesheet">` URL from the page and fetch it with the same tool — CSS files sit on CDNs and are rarely bot-walled. Storefront bundles can exceed the fetch cap and come back `truncated` — when they do, prefer the inline critical CSS already in the page's `<head>`, which carries the brand colours and typography on most modern storefronts. Inline critical CSS in `<head>`, `meta theme-color`, and inline `style` attributes are colour evidence too. Rules that target the description's classes can seed the stylesheet; the page's colours and typography pre-fill `brand_look`, confirmed with the customer rather than assumed. Budget the fetches — the tool allows ten per hour, and a derive needs two or three pages plus a stylesheet.
 2. **Standalone: a plain fetch.** Works on permissive sites; when it comes back blocked or empty, ask for a paste.

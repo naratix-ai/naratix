@@ -8,11 +8,12 @@ Author the most ambitious template the ceiling allows: a limited channel gets a 
 
 ## Authoring from scratch
 
-1. Confirm the description language (connected: offer the shop's taxonomy languages from `list-taxonomies`; it need not match the interview language). The taxonomy picked here is also **the taxonomy this template serves** — keep its id and pass it to every mapping call and test drive, or the drive silently tests the shop default against no mined attributes. **Romanian gets one more question: with or without diacritics?** The engine strips ă/â/î/ș/ț unless the template says to keep them, and some channels expect ASCII. Never assume either way.
+1. Confirm the description language (connected: offer the shop's taxonomy languages from `list-taxonomies`; it need not match the interview language). The taxonomy picked here is also **the taxonomy this template serves** — keep its id and pass it to every mapping call and test drive, or the drive silently tests the shop default against no enriched attributes. **Romanian gets one more question: with or without diacritics?** The engine strips ă/â/î/ș/ț unless the template says to keep them, and some channels expect ASCII. Never assume either way.
 2. Ask what the description should cover: the sections, the selling angle, and **how long it should be in words**. Length is a setting, not a mood — a customer who says "short, the channel truncates" needs a number (80–150 short, 200–350 standard, 400+ long). Brand voice and audience come from the profile, not from new questions.
+   Then the **tier**: *Pro* is the model every template has used so far; *Lite* is a faster, lighter model. The same template reads differently on each, so test on the tier the customer will use, and on both when they are unsure.
 3. Compose the **Template DSL body**: syntax, image-placement recipes, the loops-only image rule, and the gotchas that silently break templates are in [template-dsl.md](template-dsl.md) — read it before writing the first line.
 4. When the profile's `styling` is anything but `none`, compose the **stylesheet**: give the DSL body class names and write the CSS they refer to, built from the profile's `brand_look`. The rules that keep a look honest — class matching in both directions, the one-light-scheme rule, what `inline` and `none` change — live in the look section of [template-dsl.md](template-dsl.md).
-5. Compose the **Companion Prompt** as the DSL's inseparable other half — brand voice, audience, and guidance for every placeholder name in the DSL body: patterns in [companion-prompt.md](companion-prompt.md). Changing the DSL's placeholders means regenerating the matching prompt sections.
+5. Compose the **Companion Prompt** as the DSL's inseparable other half — brand voice, audience, and guidance for every placeholder name in the DSL body: what the model already receives, the shape and the rules are in [companion-prompt.md](companion-prompt.md). Changing the DSL's placeholders means regenerating the matching prompt sections.
 
 ## Deriving from descriptions the shop already has
 
@@ -27,17 +28,17 @@ The evidence in the examples also pre-fills the ceiling and styling questions wh
 
 ## Deliver
 
-**Connected:** `create-template` (`template_type`, name, language, `dsl_body`, `companion_prompt`, `word_count`, `use_diacritics` for Romanian, and `stylesheet` when there is one).
+**Connected:** `create-template` (`template_type`, name, language, `dsl_body`, `companion_prompt`, `word_count`, `tier`, `use_diacritics` for Romanian, and `stylesheet` when there is one).
 
 **Always pass `word_count`** — omitting it silently applies the shop-wide default instead of what the customer asked for.
 
 To evolve an existing template, call `create-template` again with `from_template_id`: it copies on write, so the original survives untouched, a new template comes back, and anything omitted is carried over. Pointing the shop default or a mapping at the copy is a separate, explicit step — see [branch-mapping.md](branch-mapping.md).
 
-**Standalone:** present the artifacts as labelled copy blocks plus app instructions — *Templates → New template → turn "Use HTML" off → paste the DSL body into the template field and the Companion Prompt into the brand-tone field → set "Number of words in description" (this is `word_count`) — and, when there is a stylesheet, paste the CSS into the preview-CSS field; for Romanian, set the "Use diacritics" toggle to the customer's answer.*
+**Standalone:** present the outputs as labelled copy blocks plus app instructions — *Templates → New template → turn "Use HTML" off → paste the DSL body into the template field and the Companion Prompt into the brand-tone field → set "Number of words in description" (this is `word_count`) — and, when there is a stylesheet, paste the CSS into the preview-CSS field; for Romanian, set the "Use diacritics" toggle to the customer's answer.*
 
 ## Walk before delivering
 
-Check the pair once: the DSL body against §What silently breaks a template, the stylesheet against the look section's rules, and the Companion Prompt against §Rules that make the pair work.
+Check the pair once: the DSL body against §What silently breaks a template, the stylesheet against the look section's rules, and the Companion Prompt against §Rules that make the pair work and the operator skill's *Writing instructions*.
 
 Then, connected, offer a [test drive](test-drive.md). Seeing one real description beats any description of it.
 
@@ -45,7 +46,7 @@ Then, connected, offer a [test drive](test-drive.md). Seeing one real descriptio
 
 ## Category and brand page descriptions
 
-Nara writes SEO descriptions for **category pages** and **brand pages** too. Same shape: a template carries the kind of page it writes for, and a shop holds a default template per kind.
+Naratix writes SEO descriptions for **category pages** and **brand pages** too. Same shape: a template carries the kind of page it writes for, and a shop holds a default template per kind.
 
 Author one exactly as above, passing `template_type: category-description` or `brand-description` (standalone: pick it in the "model type" field). `template_type` is the one vocabulary every template tool speaks; `list-templates` shows every kind and narrows to one when passed.
 
