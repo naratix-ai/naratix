@@ -66,7 +66,7 @@ Once a template has proved itself on a test drive, `launch-content` writes one k
 
 ## Reviewing what was written
 
-`show-content` with the `enrichment_id` reads a content Enrichment's texts as the app's content review shows them: one row per product, what each text did (written, skipped or failed, and why) and whether the product still waits for review. `review: to_review` keeps what waits, `attention: true` the texts the checks flagged, `content_type` and `search` narrow it, and `after` pages. `product_id` reads one product's texts in full, each beside the text it replaced, with which one is live. In apps that show views it opens the content review, where the user keeps, edits, reverts, writes again or marks everything reviewed; what they do reaches you as context. Those actions are theirs: tell them what needs their eye and leave the verdicts to them.
+`show-content` with the `enrichment_id` reads a content Enrichment's texts as the app's content review shows them: one row per product, what each text did (written, skipped or failed, and why) and whether the product still waits for review. `review: to_review` keeps what waits, `content_type` and `search` narrow it, and `after` pages. `product_id` reads one product's texts in full, each beside the text it replaced, with which one is live. In apps that show views it opens the content review, where the user keeps, edits, reverts, writes again or marks everything reviewed; what they do reaches you as context. Those actions are theirs: tell them what needs their eye and leave the verdicts to them.
 
 ## Reading what is already set up
 

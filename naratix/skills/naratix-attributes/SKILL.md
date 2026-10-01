@@ -42,9 +42,8 @@ Each run's `match_quality` counts how its attributes got their values:
 - **exact** — matched one of the attribute's allowed values directly;
 - **ai_matched** — the AI picked the allowed value closest to what the sources said;
 - **free_text** — the attribute takes any text, so the found value is kept as written;
-- **needs_attention** — a value was found but fits no allowed value, or failed a check;
 - **conflict** — cross-check only: the sources disagreed;
-- **empty** — no source gave a value.
+- **empty** — no value was kept: no source gave one, or what was found fits no allowed value or failed a check.
 
 `show-mining` with the `enrichment_id` reads the results as the review grid shows them, one category at a time: each product's review status and its values with their Match Quality, and the category's totals. Its default `cells: attention` keeps only the values a person should look at, and `match_quality: conflict` keeps the products holding one; page with `after`. To find a product the user names, pass `title_contains` or `code_contains`, the grid's own Product and Code search; the view opens searched. `product_id` reads one product's review page, and adding `attribute` reads one value's evidence: the sources behind it and the competing values. `attribute` takes the attribute's exact name; `search-catalog` with `entity: attribute` finds it by part of its name or code in the taxonomy, with whether it is required and, for a list, its allowed values. Use it to tell the user what needs their eye, then send them to the grid (`panel_url`).
 

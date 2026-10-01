@@ -13,11 +13,13 @@ Say what you want — "bring in my Mirakl catalogue", "enrich the fridges", "set
 
 ## Install
 
-**Claude (Pro, Max)** — in Claude on the web: Customize → Plugins → Discover, find Naratix, Add. Before the listing is live: Customize → Plugins → Add → Add marketplace → `naratix-ai/naratix` → Sync, then Add next to Naratix in Discover. Install on the web so the plugin is on every device.
+Step by step for each app: [api.naratix.ai/connect](https://api.naratix.ai/connect).
+
+**Claude (Pro, Max)** — in Claude on the web: Customize → Plugins → Discover, find Naratix, Add. Before the listing is live: Customize → Plugins → Add → Add marketplace → `naratix-ai/naratix` → Sync, then Add next to Naratix in Discover. Adding the plugin does not connect it: open its Connectors and press Connect. Install on the web so the plugin is on every device.
 
 **Claude (Team, Enterprise)** — an Owner adds Naratix once. First the connection, which installing the plugin does not add: Organization settings → Connectors → Add → Custom → Web, named `Naratix`, link `https://api.naratix.ai/mcp`. Then the plugin: download [naratix.zip](https://github.com/naratix-ai/naratix/releases/latest/download/naratix.zip), then Organization settings → Plugins & skills → Add → Upload a plugin, and set Default access → Installed by default. Each member then connects it once: Customize → Connectors → Naratix → Connect.
 
-**ChatGPT** — Plugins → Naratix → +, then sign in. Before the listing is live, the tools alone connect in Developer mode: Settings → Security and login → Developer mode → Plugins → + → `https://api.naratix.ai/mcp`.
+**ChatGPT** — Plugins → Naratix → Install, then sign in. Before the listing is live, the tools alone connect in Developer mode: Settings → Security and login → Developer mode → Plugins → + → `https://api.naratix.ai/mcp`.
 
 **Claude Code** —
 
@@ -26,7 +28,7 @@ Say what you want — "bring in my Mirakl catalogue", "enrich the fridges", "set
 /plugin install naratix@naratix
 ```
 
-On first use your app opens Naratix in the browser: sign in with your normal Naratix account and approve. No keys to copy.
+Then run `/mcp`, pick Naratix, choose Authenticate: your browser opens Naratix; sign in with your normal Naratix account and press Authorize. No keys to copy.
 
 ## What it sends where
 
