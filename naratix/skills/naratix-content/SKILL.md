@@ -52,7 +52,7 @@ A request to redo the setup ("redo my setup", "we switched marketplace") jumps s
 
 Category-page and brand-page descriptions are the description branch with a different `template_type`; that reference covers them.
 
-The Naratix connection also offers these flows as prompts, which the user's app may show as slash commands: *Set up descriptions* and *Set up titles*. Each is a starter naming the same tools in the same order; a customer who invoked one is already in that branch, so open its reference and carry on from where the starter left them.
+The Naratix connection also offers these flows as prompts, which the user's app may show as slash commands: *Set up descriptions* and *Set up titles*. Each is a starter naming the same tools; a customer who invoked one is already in that branch, so open its reference and carry on from where the starter left them.
 
 Two things worth knowing before opening any of them:
 
@@ -63,11 +63,11 @@ Two things worth knowing before opening any of them:
 
 Once a template has proved itself on a test drive, `launch-content` writes one kind of content — `title`, `description`, `seo_title` or `seo_description` — for a whole selection, chosen with the products list's filters, into an Enrichment.
 
-0. **Templates first.** `list-templates` for that kind (`product-title` or `product-description`; SEO text needs none). With none in use, `launch-content` refuses and draws no card: open the title or description branch, test-drive the template, apply it, then come back.
+0. **Templates first.** `list-templates` for that kind (`product-title` or `product-description`; SEO text needs none). With none in use, `launch-content` refuses and draws no card unless you pass `template_id`: open the title or description branch, test-drive the template, apply it, then come back.
 1. **A quick test drive.** Before the first bulk launch of a kind, offer a [test drive](references/test-drive.md) of the template that will write it, on one or two products (`generate-title` or `generate-description`), even when it is the default; the user may skip it. Say a template was tested only when the user or a run in `list-runs` shows it: `template_road` only means the template is DSL-based.
 2. **Order.** A description reads the title, and both read the enriched attributes, so titles come before descriptions, each launch once the one before it has finished. Size the kind the user asked for (step 4): its preview is the question's one card and gives the counts. When its products need an earlier kind first (titles before descriptions), say so in words beside that preview, ask them to hold off on its Start button if they want the earlier kind first, and offer that launch; size it only on their yes, and size the asked kind again once it has finished. Quote how many products have or lack a title or description only from a tool result, such as the preview's `already_have`.
 3. **Template.** Without `template_id`, each product uses the template its category (or the nearest parent) is mapped to, else the shop's default template, as in the app; only products with neither are skipped. Pass `template_id` to write every product with one template.
-4. **Size it:** call without `confirm`. The result says how many products are in the launch, how many have no template (they are skipped: offer a default or a mapping first), how many already have this content, and how many texts it writes, in which language. Offer `skip_existing` when some already have it; otherwise they get a new text and the old one stays in their history.
+4. **Size it:** call without `confirm`, with the `taxonomy_id` the template serves (a `category_id` brings its own): content is written for one taxonomy, and a launch without either is refused. The result says how many products are in the launch, how many have no template (they are skipped: offer a default or a mapping first), how many already have this content, and how many texts it writes, in which language. Offer `skip_existing` when some already have it; otherwise they get a new text and the old one stays in their history.
 5. **Launch** with `confirm: true` after the user's yes and give the user the result's `panel_url`: the link to its review, where every new text waits In review. Then follow it with `list-runs` (`kind: enrichment`) as the `naratix-operator` skill describes.
 
 **Completion:** the launch returned an `enrichment_id` and the user has the link to its review.

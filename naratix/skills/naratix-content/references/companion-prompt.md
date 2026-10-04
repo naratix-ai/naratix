@@ -10,6 +10,7 @@ Every description call is built the same way. The Companion Prompt adds to it an
 - **The language and the total length**, from the template's settings: "about N words in total; when the template instructions give a length per section, follow those".
 - **The placeholder names**, as the names of the fields the model fills. A name is an instruction: `benefit_heading` asks for a heading about a benefit, `creative_header` invites wordplay.
 - **The product data** as the message: title, category path, the feed's description, the enriched attributes.
+- **For a product sold as several variations**, family rules: one description for the whole family, the values that differ written as the options on offer, and no title in the prompt. A line naming one colour or size, or asking to restate the title, fights them: leave option wording to Naratix.
 
 After the answer, Naratix removes any heading a model wrapped around a field, straightens French apostrophes inside words, and strips Romanian diacritics when the template says so. A Companion Prompt line asking for any of these is a second copy of the rule, and a character rule can break the text it means to fix: one model dropped every apostrophe it was told to straighten.
 
@@ -25,7 +26,7 @@ After the answer, Naratix removes any heading a model wrapped around a field, st
 ## Section guidance
 - <placeholder name>: <what this field does for the reader, its length in words or sentences>
 - <array placeholder>: <how many items, and what one item is>
-- image_count: <how to choose 0–4 for this kind of product>
+- <the @images cap's name, e.g. shown_image_count>: <how to choose 0–4 for this kind of product>
 ```
 
 ## Rules that make the pair work
@@ -35,7 +36,7 @@ After the answer, Naratix removes any heading a model wrapped around a field, st
 3. **Match length to the data.** A long template on a product with a handful of facts repeats them. Offer long templates for categories whose products carry rich data, and say so when a customer wants length everywhere.
 4. **Arrays get count + per-item shape.** For `array<…>` placeholders say how many items and what one item is ("4–6 bullets, each one capability and what it brings").
 5. **Say what the first sentence does.** Where the opening matters, name its job — the product's main use, or its strongest benefit for this audience — and check the openers on a test batch.
-6. **`image_count` is guidance, not markup.** When the DSL uses `@images({{integer::image_count}})`, tell the model how to choose the number; the engine clamps it to the images that exist.
+6. **The image count is guidance, not markup.** When the DSL uses `@images({{integer::shown_image_count}})`, tell the model how to choose that number, by the cap's name; a `product_images` loop's count is the `image_count` the engine adds, guided by that name. The engine clamps it to the images that exist.
 7. **Voice and audience come from the profile.** Rephrase the stored `brand_voice` and `audience` into working instructions; don't invent a new voice at authoring time. Leave tone to the voice lines: a persona ("detect the tone from the category") adds a second voice.
 8. **Language rules match the template's language.** Spacing before `:` and `;` is French; a rule written for one language is wrong in a template for another.
 9. **Injected values need no guidance.** `product_title` and `product_images` are filled by the engine, never by the model — listing them under Section guidance is noise.

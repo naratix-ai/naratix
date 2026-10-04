@@ -16,7 +16,7 @@ Each distinct `name` becomes a required LLM response field. `name` must be word 
 
 **One placeholder per line.** The parser is greedy: two `{{…::…}}` on the same line merge into one corrupt match and the first placeholder is never filled. Put each placeholder in its own tag on its own line.
 
-**Engine-reserved names** — `product_title`, `product_images`, `image_count`, `img` belong to the engine: use them only in the exact constructs this reference shows, never as content placeholders you invent guidance for (except `image_count`, whose choice the Companion Prompt guides).
+**Engine-reserved names** — `product_title`, `product_images`, `image_count`, `img` belong to the engine: use them only in the exact constructs this reference shows, never as content placeholders you invent guidance for. `image_count` is never written in a template body, not even as an `@images` cap (`create-template` and the app refuse it: name the cap yourself, e.g. `shown_image_count`). For a `product_images` loop the engine adds it, and the Companion Prompt guides it by that name.
 
 ## Injected values (never LLM-generated)
 
@@ -45,12 +45,12 @@ Images come exclusively from these two constructs. Both clamp to the images the 
 **`@images` block** — repeats its body once per image, `{{img}}` is the URL:
 
 ```
-@images({{integer::image_count}})
+@images({{integer::shown_image_count}})
     <img src="{{img}}" alt="">
 @endimages
 ```
 
-- `@images(3)` caps at a literal 3; `@images` alone uses every image; `@images({{integer::image_count}})` lets the LLM choose the count (guide the choice in the Companion Prompt) — the count is clamped to availability either way. This directive is the only place an `integer` placeholder belongs.
+- `@images(3)` caps at a literal 3; `@images` alone uses every image; `@images({{integer::shown_image_count}})` lets the LLM choose the count (guide the choice in the Companion Prompt by the cap's name) — the count is clamped to availability either way. This directive is the only place an `integer` placeholder belongs.
 - A leading `from,` (1-based) slices the gallery before the cap: `@images(2, 2)` shows images 2 and 3, `@images(4, {{integer::rest}})` starts at the 4th, `@images(4,)` shows everything from the 4th. A slice past the product's last image renders nothing. This is how several blocks each show a *different* run of the gallery — without it every block starts at the first image.
 - Closing tag is exactly `@endimages`.
 
@@ -62,16 +62,16 @@ Images come exclusively from these two constructs. Both clamp to the images the 
 @end
 ```
 
-Its length follows the LLM's `image_count` too.
+Its length follows the engine's `image_count` (*Engine-reserved names*, above).
 
 **Hard guardrail**: indexed refs `{{img::N}}` / `{{img::N-}}` exist in the engine but render a literal `NO_IMAGE` string into the description when the product lacks that image. Never emit them; a loop construct expresses every placement.
 
 ### Placement recipes (from the profile's `image_placement`)
 
 - **hero** — one image up top: `@images(1) <img src="{{img}}" alt=""> @endimages` right after the opening section.
-- **interleaved** — images woven between content: ONE `@images({{integer::image_count}})` block whose body wraps each image in its own break (`<div>`/`<p>` per iteration). Repeating several `@images(1)` blocks shows the *same first image* each time — one block, many iterations. When the content between images is fixed (three authored paragraphs), use sliced blocks instead — `@images(2, 1)` after the first paragraph, `@images(3, 1)` after the second — so each slot shows the next image and disappears when the product runs out.
+- **interleaved** — images woven between content: ONE `@images({{integer::shown_image_count}})` block whose body wraps each image in its own break (`<div>`/`<p>` per iteration). Repeating several `@images(1)` blocks shows the *same first image* each time — one block, many iterations. When the content between images is fixed (three authored paragraphs), use sliced blocks instead — `@images(2, 1)` after the first paragraph, `@images(3, 1)` after the second — so each slot shows the next image and disappears when the product runs out.
 - **gallery** — all images together at the end: one `@images` block whose body is a compact `<img>` row/list.
-- **ai_decided** — `@images({{integer::image_count}})` and a Companion Prompt line telling the LLM how to choose the count (e.g. "pick 0–4 images; skip images for accessories").
+- **ai_decided** — `@images({{integer::shown_image_count}})` and a Companion Prompt line telling the LLM how to choose the count (e.g. "pick 0–4 images; skip images for accessories").
 - **none** (or no `img` in the ceiling) — no image construct at all.
 
 ## Giving the template a look
@@ -142,7 +142,7 @@ Ceiling `["p","br","h2","ul","li","strong","img"]`, placement `interleaved`:
 ```
 <h2>{{string::headline}}</h2>
 <p>{{string::intro}}</p>
-@images({{integer::image_count}})
+@images({{integer::shown_image_count}})
 <p><img src="{{img}}" alt=""></p>
 @endimages
 <h2>{{string::features_title}}</h2>
@@ -154,13 +154,13 @@ Ceiling `["p","br","h2","ul","li","strong","img"]`, placement `interleaved`:
 <p><strong>{{string::closing}}</strong></p>
 ```
 
-Every placeholder name here (`headline`, `intro`, `image_count`, `features_title`, `features`, `closing`) must have a guidance line in the Companion Prompt.
+Every placeholder name here (`headline`, `intro`, `shown_image_count`, `features_title`, `features`, `closing`) must have a guidance line in the Companion Prompt.
 
 ## Length and paragraph count
 
 **Length is set on the template** (`word_count`) and reaches the model as a target for the whole description.
 
-**Paragraph count is not a setting on a DSL template.** The template's old `number_of_paragraphs` field only drives the older layout templates — on a DSL body it does nothing. Structure comes from what you write: one placeholder per section, or a loop when the count should vary. To get "three paragraphs", either write three placeholders or loop over an `array<string>` and say how many items you want in the Companion Prompt. Density per section is controlled the same way — through the prompt's per-placeholder guidance, not a toggle.
+**Paragraph count is not a setting on a DSL template.** Structure comes from what you write: one placeholder per section, or a loop when the count should vary. To get "three paragraphs", either write three placeholders or loop over an `array<string>` and say how many items you want in the Companion Prompt. Density per section is controlled the same way — through the prompt's per-placeholder guidance, not a toggle.
 
 ## Around the body
 
