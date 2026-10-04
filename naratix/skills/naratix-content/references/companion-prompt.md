@@ -1,6 +1,6 @@
 # Companion Prompt patterns
 
-The Companion Prompt is the Template DSL body's inseparable other half. It carries three things: **brand voice**, **audience**, and **guidance for each placeholder, keyed by its name**. Write it by the operator skill's *Writing instructions*; this page adds what is particular to descriptions.
+The Companion Prompt is the Template DSL body's inseparable other half. It carries three things: **brand voice**, **audience**, and **guidance for each placeholder, keyed by its name**. Write it by [Writing instructions](../../naratix-operator/references/writing-instructions.md); this page adds what is particular to descriptions.
 
 ## What the model already receives
 
@@ -50,7 +50,7 @@ A title template's prompt is the **whole** instruction the model gets: Naratix a
 - **the style**, from `title_style.style` — keyword (dense with the terms a buyer searches), natural (a fluent phrase), minimal (the bare essentials);
 - **the order** of the parts, from `component_order`, as a format with slots;
 - **the length cap** in characters, from `length_cap`, with which part to drop first when a title would pass it;
-- **the language** as `{{language}}`, which Naratix fills from the template's language;
+- **the language** as `{{language}}`, which Naratix fills from the template's language, in a test drive and a launch alike;
 - **one line of brand voice**, condensed from `brand_voice`;
 - **the second text**, below.
 

@@ -124,12 +124,12 @@ Put a section's heading **inside** its loop whenever the section may legitimatel
 
 ## What silently breaks a template
 
-The engine does not validate DSL bodies — malformed constructs leak into customer-facing output as raw text. Before delivering, walk the body once against this list:
+Malformed constructs leak into customer-facing output as raw text. Connected, `create-template` refuses a body with any of items 1–6 or 8, one `L{line}: message` per finding, and saves nothing: fix those lines and call again. What saves but deserves a look comes back as `lint_warnings` (a tag no channel keeps, a stylesheet class unused or missing). The shop's own ceiling, item 7, nothing checks for you, and standalone nothing checks at all. Before delivering, walk the body once against this list:
 
 1. Two placeholders on one line (greedy-parser corruption — see above).
 2. An inline non-string placeholder (`{{integer::…}}` outside an `@images` directive) — never substituted, ships as raw text.
 3. `@foreach` without its `@end`, or `@images` without `@endimages` — the raw directive text ships in the description.
-4. Blade spellings that look right but aren't: `@endforeach` (must be `@end`), `{{ $item }}` in a loop body (must be `{!! $item !!}`).
+4. Spellings from other template languages that look right but aren't: `@endforeach` (must be `@end`), `{{ $item }}` in a loop body (must be `{!! $item !!}`).
 5. Placeholder names with hyphens, dots, or spaces — never matched, never filled.
 6. A reserved name used as an authored placeholder.
 7. Tags outside the ceiling — the engine won't strip them; the channel will.
@@ -160,7 +160,7 @@ Every placeholder name here (`headline`, `intro`, `image_count`, `features_title
 
 **Length is set on the template** (`word_count`) and reaches the model as a target for the whole description.
 
-**Paragraph count is not a setting on a DSL template.** The template's old `number_of_paragraphs` field only drives the legacy Blade layouts — on a DSL body it does nothing. Structure comes from what you write: one placeholder per section, or a loop when the count should vary. To get "three paragraphs", either write three placeholders or loop over an `array<string>` and say how many items you want in the Companion Prompt. Density per section is controlled the same way — through the prompt's per-placeholder guidance, not a toggle.
+**Paragraph count is not a setting on a DSL template.** The template's old `number_of_paragraphs` field only drives the older layout templates — on a DSL body it does nothing. Structure comes from what you write: one placeholder per section, or a loop when the count should vary. To get "three paragraphs", either write three placeholders or loop over an `array<string>` and say how many items you want in the Companion Prompt. Density per section is controlled the same way — through the prompt's per-placeholder guidance, not a toggle.
 
 ## Around the body
 

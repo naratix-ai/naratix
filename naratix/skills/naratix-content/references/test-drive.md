@@ -6,8 +6,8 @@ A template reads differently on a product with five facts than on one with fifty
 
 1. `list-test-products` (pass the taxonomy the template serves) returns candidates best-first, each with a verdict and a reason. **Show them and let the customer pick — picking for them is not allowed, even when the ranking makes the answer look obvious.** For a test batch, ask for one `bare` or thin product, one medium and one `ready`. Repeat each reason in their words: a `bare` product makes any template look worse than it is, and they deserve to know that before judging the output.
 2. Say which products and how many texts first (six for a test batch) and wait for an explicit yes to *those products*.
-3. `generate-description` (`subject_type: product`, `subject_id`, template, taxonomy) returns a link and a `run_id` immediately, once per product and run. Hand the links over right away and say they fill themselves in.
-4. `list-runs` (`kind: generation`, each `run_id`): `completed` comes with an excerpt of the text — report it ready; `failed` comes with the reason — say plainly that it failed and nothing on the product changed.
+3. `generate-description` (`subject_type: product`, `subject_id`, the template, the taxonomy) returns a link and a `run_id` immediately, once per product and run. Hand the links over right away and say they fill themselves in. Without a template it uses the one a launch would — the product's category mapping, else the shop's default; without a taxonomy, the shop's default taxonomy, and the result names it. A test replaces nothing live: the text joins the product's history and its current text stays.
+4. `list-runs` (`kind: generation`, each `run_id`): `completed` comes with an excerpt of the text — report it ready; `failed` comes with the reason — say plainly that it failed and nothing on the product changed. In apps that show views, each call draws a card that fills in by itself, the text beside the product facts it was written from, and its context tells you when it lands.
 5. Read the results with the customer, in the language the shop sells in, against the checks below. Read them yourself as well; a second opinion from another model is not a reading.
 
 For a title template, run the same shape but end in `generate-title`; see [branch-title.md](branch-title.md).
@@ -28,4 +28,4 @@ Each finding points to one line of the template to change. Change that line, the
 
 ## When several products come back thin
 
-One thin result is a thin product. Several thin the same way is the catalogue, not the template — stop adjusting the template and offer a quality check instead: [quality-checks.md](quality-checks.md).
+One thin result is a thin product. Several thin the same way is the catalogue, not the template — stop adjusting the template and offer a quality check instead (the `naratix-quality` skill).

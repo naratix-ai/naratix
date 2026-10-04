@@ -12,7 +12,7 @@ One example is workable, but say the trade-off plainly: every fixed-versus-varia
 
 Product-page URLs are the easiest way to collect examples — "give me links to two or three similar products" takes the customer a moment. The ladder, in order:
 
-1. **Connected: `fetch-shop-page`** (format `html`). It downloads through Naratix's scraping infrastructure, so bot walls that block a plain fetch are handled. Extract the description region — the block carrying the long-form product copy — with its classes, and discard the page chrome (navigation, header, footer, scripts). The look mostly lives in linked CSS: take the main `<link rel="stylesheet">` URL from the page and fetch it with the same tool — CSS files sit on CDNs and are rarely bot-walled. Storefront bundles can exceed the fetch cap and come back `truncated` — when they do, prefer the inline critical CSS already in the page's `<head>`, which carries the brand colours and typography on most modern storefronts. Inline critical CSS in `<head>`, `meta theme-color`, and inline `style` attributes are colour evidence too. Rules that target the description's classes can seed the stylesheet; the page's colours and typography pre-fill `brand_look`, confirmed with the customer rather than assumed. Budget the fetches — the tool allows ten per hour, and a derive needs two or three pages plus a stylesheet.
+1. **Connected: `fetch-shop-page`** (format `html`). Extract the description region — the block carrying the long-form product copy — with its classes, and discard the page chrome (navigation, header, footer, scripts). The look mostly lives in linked CSS: once styling is known to survive on the channel being written for, take the main `<link rel="stylesheet">` URL from the page and fetch it with the same tool. Storefront bundles can exceed the fetch cap and come back `truncated` — when they do, prefer the inline critical CSS already in the page's `<head>` (the page keeps its first 10 KB), which carries the brand colours and typography on most modern storefronts. Inline critical CSS in `<head>`, `meta theme-color`, and inline `style` attributes are colour evidence too. Rules that target the description's classes can seed the stylesheet; the page's colours and typography pre-fill `brand_look`, confirmed with the customer rather than assumed. Budget the fetches — the tool allows ten per hour, and a derive needs two or three pages plus a stylesheet.
 2. **Standalone: a plain fetch.** Works on permissive sites; when it comes back blocked or empty, ask for a paste.
 3. **Last resort: a screenshot.** It shows the look — useful for the stylesheet — but carries no markup, so the DSL still needs at least one pasted example.
 
@@ -31,9 +31,9 @@ Say which rung was used. For extra same-category pages where only the content ma
 
 ## The split table — nothing is created before it
 
-Show the customer two lists and wait:
+Show it as soon as the diff is done, before any profile question, and wait for corrections. Two lists:
 
-- **Fixed** — kept verbatim, will appear on *every* description. Quote each piece.
+- **Fixed** — kept verbatim, will appear on *every* description. Quote each piece. When the examples come from another channel than the target, mark structural markup "kept if the marketplace displays it".
 - **Variable** — placeholder name, one line on what fills it, and the example values the diff saw.
 
 Guess wrong toward variable and the brand's standing promise disappears; wrong toward fixed and every product repeats one product's sentence. The table is the only defence, and it is not optional — with one example it is where wrong guesses get caught, with three it is where the customer sees their template for the first time.
@@ -41,7 +41,8 @@ Guess wrong toward variable and the brand's standing promise disappears; wrong t
 ## Markup, styling, and what the examples prove
 
 - Keep the customer's own class names; lift their CSS into the template's stylesheet. If they pasted markup with classes but no CSS, ask for the stylesheet — or author one from the page's rendered look, under the look-section rules of [template-dsl.md](template-dsl.md).
-- **Tags present in the examples are proven accepted by the channel** — the paste is direct evidence. For a shop not yet onboarded, pre-fill `channel_ceiling` with exactly those tags and confirm in one question; skip the tag-by-tag walk. Classes or inline styles in the paste answer the styling question the same way.
+- **Tags present in examples taken from the channel being written for are proven accepted by it** — the paste is direct evidence. For a shop not yet onboarded, pre-fill `channel_ceiling` with exactly those tags and confirm in one question; skip the tag-by-tag walk. Classes or inline styles in the paste answer the styling question the same way.
+- **Examples from another channel** (`fetch-shop-page` on the customer's own webshop while they ask for marketplace descriptions, or a target channel nobody named) prove structure, voice, standing promises and length, not the target's ceiling. Ask which marketplace by name, then confirm what it displays (formatting or plain text; whether classes or inline styles survive) with the [channel-ceiling.md](channel-ceiling.md) questions. Leave `channel_ceiling` and styling unfilled from the webshop's markup until the customer answers.
 - For an onboarded shop whose stored ceiling lacks a tag the examples use (or vice versa), surface the contradiction and let the customer settle it — never silently widen the profile or silently drop their markup.
 - Whatever the settled ceiling excludes is dropped from the derived template, with the customer told what was dropped and why.
 

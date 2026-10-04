@@ -4,7 +4,7 @@ The Channel Ceiling is the set of HTML tags the customer's sales channel accepts
 
 ## Opening + escape hatch
 
-Start with the escape hatch so limited channels take one question, not nine:
+The interview opens as the skill's *Onboarding interview* says: descriptions the customer already likes first, else the plain explanation of what the questions are for. Then the escape hatch, so limited channels take one question, not nine:
 
 > "Does your sales channel display formatted descriptions — headings, bullet lists, images — or does it only show plain text? If you're not sure, look at a competitor's product page on the same channel."
 

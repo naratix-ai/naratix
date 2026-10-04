@@ -12,7 +12,9 @@ Each kind keeps its own default, so setting a brand default never disturbs the p
 
 The customer names the area in plain language. `search-catalog` with `entity: category` finds anchor candidates; tokens match anywhere in the breadcrumb, so "kitchen knives" finds a *Knives* under *Kitchen*.
 
-Confirm the anchor by its `path`, then `map-template-to-category`. Re-mapping an anchor updates it in place; mapping a title never clears a description mapping, and vice versa.
+Confirm the anchor by its `path`, then `map-template-to-category`. Re-mapping an anchor updates it in place; mapping a title never clears a description mapping, and vice versa. The answer names a template written in another language than the taxonomy's: say so, since its texts come out in the template's language.
+
+To stop a subtree using its own template, `map-template-to-category` with `clear` (`title`, `description` or `both`) on the anchor and no template id: the subtree falls back to its parent's mapping, else the shop default.
 
 **Standalone:** name the target categories and give app instructions — *Taxonomies → your taxonomy → Template Mappings → set the template on the anchor row (children inherit), or tick "default" on the template for shop-wide.*
 
@@ -20,7 +22,7 @@ Confirm the anchor by its `path`, then `map-template-to-category`. Re-mapping an
 
 After a default handoff or a re-mapping replaces an old template, offer to archive it (`archive-template`, with the same `template_type`).
 
-Archiving is a soft retirement — nothing already generated is ever lost. The server refuses while the template is still a default or mapped anywhere, and names the exact blockers. Relay those blockers and offer to re-point them first.
+Archiving is a soft retirement — nothing already generated is ever lost. The server refuses while the template is still a default or mapped anywhere, and names the exact blockers. Relay those blockers and offer to re-point them first, or to clear a mapping that should fall back to its parent's.
 
 ## Proving it landed
 
