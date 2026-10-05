@@ -33,7 +33,7 @@ Your first output in the turn is a chat message saying what an audit is: the AI 
    - Applied in place: say so and when. Another in-place apply writes it again; offer it only if the user asks.
    - A new taxonomy: name it. `implement-audit` refuses a second one.
    - `changed_nothing`: the apply wrote no category. Say so; the taxonomy is as that apply found it.
-   - Still being applied (its note says so, with `categories_done` of `categories_sent`): say how far it has got, and offer to check again in a few minutes.
+   - Still being applied (its note says so, with `categories_done` of `categories_sent`): say how far it has got; its card follows the apply and its context says when it ends, and where no card shows, offer to check again in a few minutes.
    - Nothing recorded, with `apply_log_since` set: the audit is older than the apply log, and an apply before that day left no record. Ask the user whether they applied it before offering to apply it in place.
    - Applied either way: also say how many categories could not be applied (`applied.categories_failed`) and what `applied.values_kept` counts (*Apply an audit*, below).
 2. Then the counts in `changes`: tell the user what the audit found in a sentence or two.
