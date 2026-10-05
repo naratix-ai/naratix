@@ -22,7 +22,7 @@ To stop a subtree using its own template, `map-template-to-category` with `clear
 
 After a default handoff or a re-mapping replaces an old template, offer to archive it (`archive-template`, with the same `template_type`).
 
-Archiving is a soft retirement — nothing already generated is ever lost. The server refuses while the template is still a default or mapped anywhere, and names the exact blockers. Relay those blockers and offer to re-point them first, or to clear a mapping that should fall back to its parent's.
+Archiving is a soft retirement — nothing already generated is ever lost. The server refuses while the template is still a default or mapped anywhere, and says why: its default role, or how many categories it is mapped to, naming up to three. Relay that and offer to re-point them first, or to clear a mapping that should fall back to its parent's. Past three, the taxonomy's **Template mappings** tab in the app lists every category's template.
 
 ## Proving it landed
 
