@@ -1,0 +1,17 @@
+# A rule of the user's own
+
+How a rule the user describes is written, tried and saved. Where their market comes in: [SKILL.md](../SKILL.md), *The user's market*.
+
+## A rule described in words
+
+When the user says what a faulty product looks like ("flag dresses with no colour", "a title with 'lot de' is suspect"), write it as one check rule with `create-quality-rule`. It makes no AI calls.
+
+1. **Scope:** `taxonomy_id`, and `category_id` for one leaf category from `search-catalog`. A rule checks only the products placed in its own category, so name the leaf, or leave `category_id` out for every category of the taxonomy.
+2. **Conditions:** each an `attribute`, an `operator` and its `value` or `values`, named as the taxonomy spells the attribute; `__title` reads the title. A wrong attribute, or an operator its type does not take, comes back with the ones that fit. `match: any` flags a product when one condition holds; the default flags it when all hold. `severity: red` gives flagged products the Critical Conflict label, `severity: amber` the Review Flag. A rule can give one of the shop's own labels instead, as `label` ("Group: Label"; a wrong name comes back with the ones it can give): `list-products` with `labels` then lists that rule's findings apart, such as every product missing legal information.
+   - What a check rule reads: a condition on an attribute the product does not carry at all is false. "Is not set" catches an attribute that is there and empty, so a rule for "no colour" flags only products whose enrichment left Colour empty.
+3. **Try it:** call without `confirm`. It saves nothing and says how many of up to 20 enriched products it flags, with examples. Read the rule back to the user in plain words with that count. A rule that flags every product tried, or none, usually says something other than what the user meant: reword it together first.
+   - **Name its reach.** The rule reads only enriched products: the preview's `enriched_product_count` is how many of the `scope_product_count` products in its scope it reads. Say both with the trial count, as the user counts them ("it reads 400 of your 900 dresses; 500 are not enriched yet"): the rest cannot be flagged until they are enriched. The trial counts up to 1,000, so 1,000 means 1,000 or more: say "400 of more than 1,000 dresses", and when both read 1,000, that it reads more than 1,000, how many are not enriched yet being not counted.
+   - **Offer to fill the gaps.** When `enriched_product_count` is below `scope_product_count`, or the rule flags an attribute left empty (an energy class, a composition or safety field), offer in the same reply, after the save question, to enrich those products: `launch-mining`, by the `naratix-attributes` skill, so load it. For an energy class on fridges, washing machines or dishwashers, say the search will include `eprel`, the EU energy-label registry, the most trusted source there. Their yes starts nothing until they confirm the launch.
+4. **Save** with `confirm: true` after their yes. The rule is switched on at once, and one check of the enriched products follows: follow its `check_batch_id` as the cold-start's check (*Cold-start* in [SKILL.md](../SKILL.md)), then offer to read the findings.
+
+**Completion:** the user heard the rule in plain words with its trial count and said yes before it was saved, or it was reworded until it says what they meant.

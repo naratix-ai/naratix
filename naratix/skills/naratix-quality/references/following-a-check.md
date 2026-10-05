@@ -1,0 +1,3 @@
+# Following a check
+
+A check returns at once with a run still going: follow it as the `naratix-operator` skill's *Following work* says. Where no card shows, `list-runs` (`kind: quality-check`) with the id the call returned says whether it finished: `run_id` with its `engine` for health and applicability, `batch_id` for consistency, which fans out into several runs sharing it once a worker picks the check up. A catalogue-sized run takes a while: check back at a sensible interval. When the user comes back without the id, `list-runs` lists every engine's runs, each tagged with its `engine`: match on that rather than taking the newest row.

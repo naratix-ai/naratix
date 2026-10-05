@@ -5,7 +5,7 @@ description: Improving product photos in Naratix with Image Studio — finding n
 
 # Naratix images
 
-**Image Studio** works on a product's photos and proposes **image candidates**: new or improved photos a person approves before they reach the product. It can find new photos of the product on the web, edit the backgrounds of the existing ones, or generate new photos from them. One exception to approval: with `find_images`, a product that has no photos can get its strong found photos at once, so the other steps have something to work on, when the user says so. Every launch is sized and agreed first (the `naratix-operator` skill's go-ahead rules). A generated photo or a photo set in a scene is marked as AI-made, which the law requires; a photo found on the web comes as it was published.
+**Image Studio** works on a product's photos and proposes **image candidates**: new or improved photos a person approves before they reach the product. It can find new photos of the product on the web, edit the backgrounds of the existing ones, or generate new photos from them. One exception to approval is `fill_empty` (*Improve images*, step 2). Every launch is sized and agreed first (the `naratix-operator` skill's go-ahead rules). A generated photo or a photo set in a scene is marked as AI-made, which the law requires; a photo found on the web comes as it was published.
 
 ## Recommend from the shop's photos
 
@@ -36,14 +36,13 @@ When the main products show no photos, the photos may sit on their variations, a
    | `min_size` | — | With `find_images`: leaves out found photos smaller than this many pixels on a side. |
    | `variants` | 1 | With `generate_variants`: new photos per product, up to 4. |
 
-   Two choices change what happens to the shop's photos; use them only when the user asks: `auto_approve_strong` approves the strong results without review, and `replace_originals` puts approved images in place of the originals instead of alongside them.
+   `auto_approve_strong` approves the strong results without review, which changes what happens to the shop's photos: use it only when the user asks.
 
-   At most one question is the user's to answer, once, in the chat or on the card: on a `find_images` run without `auto_approve_strong` over products that have no photos, whether those get the strong found photos at once (`fill_empty`, which never goes with `auto_approve_strong`); on `edit_backgrounds` with `auto_approve_strong`, whether approved photos replace the originals (`replace_originals`). Explain `fill_empty` before the go-ahead, and pass an answer the user already gave; otherwise the card asks it, and their go-ahead needs it.
+   At most one question is the user's to answer, once, in the chat or on the card: on a `find_images` run without `auto_approve_strong` over products that have no photos, whether those get the strong found photos at once, so the other steps have something to work on (`fill_empty`, which never goes with `auto_approve_strong`); on `edit_backgrounds` with `auto_approve_strong`, whether approved photos go in place of the originals instead of alongside them (`replace_originals`, which changes what happens to the shop's photos too: use it only when the user asks). Explain `fill_empty` before the go-ahead, and pass an answer the user already gave; otherwise the card asks it, and their go-ahead needs it.
 
    Set only in Image Studio in the app: a gradient background, which websites to take photos from or avoid, and written guidance for the generated photos or for how results are checked. When the user asks for one of these, say so before launching and point to the app (`panel_url`) rather than launching with the defaults.
 3. **Try 5 products first** when the selection is over about 20 products: pick 5 spread over its categories from one `list-products` page with the user's filters (each row names its category), launch them as `product_ids` with the same choices, and review the results with the user. Then run the rest into the same Enrichment (`add_to_enrichment_id`) with the user's filters again. Those filters still hold the 5 trial products, so say before the go-ahead that those run again and get new candidates; on `photos: without`, the trial products that got photos drop out. The user may decline the trial.
-4. **Size it:** call without `confirm`. The result gives the products and photos the run covers. Above the per-run limit the note says so, and the go-ahead confirms that size too; a run past the hard ceiling is refused, so split the selection.
-5. **Launch** with `confirm: true` after the user's yes. Its launch card follows the run; without one, follow it as the `naratix-operator` skill describes.
+4. **Size it, then launch**, as the `naratix-operator` skill's *The go-ahead* says: the size gives the products and photos the run covers. Above the per-run limit the note says so, and the go-ahead confirms that size too; a run past the hard ceiling is refused, so split the selection. The launch card follows the run; without one, follow it as the `naratix-operator` skill describes.
 
 **Completion:** the launch returned an `enrichment_id` and the user has the link to the image review.
 
@@ -60,7 +59,11 @@ When the main products show no photos, the photos may sit on their variations, a
 
 `candidate_counts` holds the first four; products `skipped` or `failed` come from `show-images`' `counts` (failed also from the Batch's `failed` in `list-runs`).
 
-`show-images` with the `enrichment_id` reads the candidates as the image review shows them: per product, each edit beside its original, the generated variants and the photos found, with their status, the checks' verdict and what approving would do. `status: review` keeps the ones a person should look at; `category_id`, `search` or `product_ids` (several named products in one call) narrow it. `categories` lists the run's categories 25 at a time: `category_search` finds one by name, and `category_offset` set to the answer's `categories_next_offset` (null on the last page) reads the next 25. Narrow to what the user asks about instead of paging: each call draws the view again, and in apps that show views the user pages, filters and searches in the view, which opens on your filters and shows the run's progress while it goes on. Where no view shows, page with `after`. Use it to tell the user what needs their eye.
+`show-images` with the `enrichment_id` reads the candidates as the image review shows them: per product, each edit beside its original, the generated variants and the photos found, with their status, the checks' verdict and what approving would do: use it to tell the user what needs their eye.
+
+- `status: review` keeps the ones a person should look at; `category_id`, `search` or `product_ids` (several named products in one call) narrow it.
+- `categories` lists the run's categories 25 at a time: `category_search` finds one by name, and `category_offset` set to the answer's `categories_next_offset` (null on the last page) reads the next 25.
+- Narrow it to the user's ask, as the `naratix-operator` skill's *One card per question* says; the view opens on your filters and shows the run's progress while it goes on.
 
 Approving, dismissing or undoing one by one is the user's call: in the image review the launch links to, or in the image candidates view `show-images` opens in apps that show views. What the user does in the view reaches you as context on your next turn.
 

@@ -7,7 +7,7 @@ description: Taxonomies and their audits in Naratix — the category tree, each 
 
 A **taxonomy** is the shop's category tree: every category, the attributes each one expects (colour, width, energy class), and each attribute's allowed values. Enrichment fills those attributes, content is written from them, and channels receive them, so a messy taxonomy shows up everywhere downstream.
 
-An **audit** has the AI review the attributes and values of the taxonomy's leaf categories and suggest fixes: rename, retype or remove attributes, suggest missing ones, add or remove values, and merge values that repeat. Nothing changes until the audit is applied.
+An **audit** has the AI review the attributes and values of the taxonomy's leaf categories and suggest fixes: rename, retype or remove attributes, suggest missing ones, add or remove values, and merge values that repeat.
 
 ## Show what a taxonomy holds
 
@@ -27,7 +27,7 @@ Your first output in the turn is a chat message saying what an audit is: the AI 
 
 ## Read an audit's suggestions
 
-`show-audit` reads a finished audit: whether and how it was already applied, then per category and attribute, what it would rename, retype or remove, the attributes it suggests, and the values it would add, reject or merge, with a count per kind over the whole audit. In apps that show views, the user can browse and filter it themselves.
+`show-audit` reads a finished audit: whether and how it was already applied, then per category and attribute, what it would rename, retype or remove, the attributes it suggests, and the values it would add, reject or merge, with a count per kind over the whole audit.
 
 1. Read `applied` first. The suggestions still list after an apply, so say how it was applied before any talk of applying:
    - Applied in place: say so and when. Another in-place apply writes it again; offer it only if the user asks.
@@ -37,14 +37,12 @@ Your first output in the turn is a chat message saying what an audit is: the AI 
    - Nothing recorded, with `apply_log_since` set: the audit is older than the apply log, and an apply before that day left no record. Ask the user whether they applied it before offering to apply it in place.
    - Applied either way: also say how many categories could not be applied (`applied.categories_failed`) and what `applied.values_kept` counts (*Apply an audit*, below).
 2. Then the counts in `changes`: tell the user what the audit found in a sentence or two.
-3. Narrow to what the user asks about instead of paging through everything; each call draws the view again, and in a view the user filters and opens categories themselves, so call again only for what the view does not show:
+3. Narrow to what the user asks about, as the `naratix-operator` skill's *One card per question* says; in a view the user filters and opens categories themselves, so call again only for what the view does not show:
    - `by: category` lists the categories with what each one changes, under their parent path. The audit never renames, moves or adds a category, so this is the taxonomy after the audit.
    - `category_id` from that list reads one category: every suggestion, and the attributes it leaves as they are.
    - `change`, `category` or `attribute` narrow either.
 4. Before asking how to apply it, explain `apply`: what each mode takes into a new taxonomy and in place, and why a way is not open (a treat-as-local audit, an audit already implemented). Name each mode by its `apply.modes[].label`, in the user's language; its `apply_mode` code goes only into the call.
 5. End each answer with the next step you can take for the user, as a question: open a category, or show one kind of change. While `applied` is null, also offer to apply it their way; once it is applied, offer the next step the result's note names instead: placing products in the new taxonomy, or enriching the attributes an in-place apply changed. A user who has never seen an audit should never have to guess what comes next.
-
-Nothing in it applies anything.
 
 ## Apply an audit
 
@@ -54,7 +52,11 @@ Two ways, both the user's call. Before either, check the audited taxonomy's `syn
   1. Ask the user what to call the new taxonomy (`taxonomy_name`, unique in the shop) and pass it on every call, the preview included. Call without `confirm`: it creates nothing, and its card asks how much of the audit to apply (`apply_mode`, the modes `show-audit`'s `apply` explains). An answer the user already gave goes with your call and shows picked; where no card shows, ask in the chat.
   2. Apply everything (`apply_mode: full`) copies the attributes held on parent categories as they are, and so does `apply_mode: custom` with `preserve_parent_structure: true`, its default there; the other modes copy only the attributes the audit reviewed. When the preview says parents are left out, ask once.
   3. Create on the card, or `confirm: true` with their mode after their yes. The card follows the build; without one, `list-runs` (`kind: audit`, its `audit_id` as the `run_id`) reads `applied`. Then offer to place products in it (`launch-categorization` with its `taxonomy_id`): for a partial audit, only the products of the categories it covered.
-- `apply-audit-in-place` changes the **live taxonomy** and cannot be undone. Explain that, and call it only after an explicit yes. Before the user picks a mode, warn them, apart from any one mode: in place, an attribute several categories share keeps one name and type for all of them, and its value changes (under `full`, `values_only` and `custom` alike) reach every category that shares it; only `localize` gives a category its own renamed copy and leaves the others as they are. It applies every category and attribute of the audit: a user who wants only some applies them in the app: give them `show-audit`'s `panel_url` as a link. On a running audit it applies only the finished categories, so wait for the end. It has no preview and no card that asks the mode, and an omitted `apply_mode` applies everything: settle the mode in the chat and always pass it with `confirm: true`. Its card follows the apply; where none shows, `list-runs` (`kind: audit`, its `audit_id` as the `run_id`) until `applied.at` is no earlier than the `since` it returned and `applied.under_way` is false.
+- `apply-audit-in-place` changes the **live taxonomy** and cannot be undone. Explain that, and call it only after an explicit yes. It applies every category and attribute of the audit: a user who wants only some applies them in the app: give them `show-audit`'s `panel_url` as a link. On a running audit it applies only the finished categories, so wait for the end.
+  1. **Warn them.** Before the user picks a mode, warn them, apart from any one mode: in place, an attribute several categories share keeps one name and type for all of them, and its value changes (under `full`, `values_only` and `custom` alike) reach every category that shares it; only `localize` gives a category its own renamed copy and leaves the others as they are.
+  2. **Settle the mode** in the chat: it has no preview and no card that asks the mode, and an omitted `apply_mode` applies everything.
+  3. **Confirm:** always pass the mode with `confirm: true`.
+  4. **Follow it.** Its card follows the apply; where none shows, `list-runs` (`kind: audit`, its `audit_id` as the `run_id`) until `applied.at` is no earlier than the `since` it returned and `applied.under_way` is false.
 
 `apply_removals` and `apply_value_removals` are read only with `apply_mode: custom`, which applies what full applies plus those removals; `localize` makes them already. `full` and `values_only` never remove a flagged attribute or a rejected value.
 

@@ -1,5 +1,11 @@
 # Following and controlling running work
 
+## Following work
+
+Launches join an **Enrichment**, one **Batch** per launch; `list-runs` with `kind: enrichment` reads its counts and its Batches. A card follows it: end your turn and read its context on the next one. With no card, follow it with `list-runs` at a sensible interval. With the chat closed, the user gets one email once everything in an Enrichment you started has finished.
+
+When an attribute Enrichment finishes, check its products without asking, as the `naratix-attributes` skill's *Follow the run* says.
+
 ## Has it finished?
 
 An Enrichment has **finished** once its `status` is completed, failed or cancelled. While it is active, a fresh launch may still be preparing (`preparing` counts its products before any run exists), so zero counts are no sign of an end: say it is running.
@@ -8,7 +14,7 @@ A paused Enrichment has not finished: it is on hold until resumed.
 
 ## Reading its counts
 
-An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest in `list-runs`; `products`, `done` and the rest in `show-enrichments`) cover every Batch it holds: report those. `batches` lists only the newest 20 live Batches, the newest 20 finished ones and the newest of each kind of work, and `batches_total` says how many it holds, so never add up `batches` for a total. A Batch's `number` is its Batch # in the app: name a Batch by it. `unplaced` counts the products categorization could not place, with too little data to go on: they are not done, so say how many. `show-enrichments` reads the 20 newest open Enrichments: when `more_open` is true, `list-runs` with `kind: enrichment` and `status: open` lists them all.
+An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest in `list-runs`; `products`, `done` and the rest in `show-enrichments`) cover every Batch it holds: report those. `batches` lists only the newest 20 live Batches, the newest 20 finished ones and the newest of each kind of work, and `batches_total` says how many it holds, so never add up `batches` for a total. A Batch's `number` is its Batch # in the app: name a Batch by it. `unplaced` (in `show-enrichments`; in `list-runs`, a categorization Batch's `skipped`, and each product's `outcome` `skipped`) counts the products categorization could not place, with too little data to go on: each kept its category, or stays uncategorized if it had none. They are not done, so say how many. `show-enrichments` reads the 20 newest open Enrichments: when `more_open` is true, `list-runs` with `kind: enrichment` and `status: open` lists them all.
 
 ## The Enrichments card
 
