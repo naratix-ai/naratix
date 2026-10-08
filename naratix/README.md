@@ -18,7 +18,7 @@ Each app opens Naratix's sign-in page: sign in, then press Authorize. There are 
 
 **Claude (Team, Enterprise)** — an Owner adds Naratix once. First the connection, which installing the plugin does not add: Organization settings → Connectors → Add → Custom → Web, named `Naratix`, link `https://api.naratix.ai/mcp`. Then the plugin: download [naratix.zip](https://github.com/naratix-ai/naratix/releases/latest/download/naratix.zip), then Organization settings → Plugins & skills → Add → Upload a plugin, and set Default access → Installed by default. Each member then connects once: Customize → Connectors → Naratix → Connect. A teammate's invitation is accepted on My Shops in Naratix before its shop appears.
 
-**ChatGPT** — Plugins → Naratix → Install, then sign in. Until Naratix is listed there: Settings → Security and login → turn on Developer mode, then Plugins → +, name `Naratix`, link `https://api.naratix.ai/mcp`, sign-in OAuth; press Scan tools, sign in and press Authorize, then Create. In a chat: + → Developer mode → Naratix. On Business, Enterprise and Edu an admin allows Developer mode first. Developer mode adds the Naratix tools without the plugin's step-by-step guidance.
+**ChatGPT** — Plugins → Naratix → Install, then sign in. Until Naratix is listed there, use ChatGPT's desktop app: Settings → Plugins → Add → Add a marketplace, source `naratix-ai/naratix`, then search Naratix → Install plugin → Set up Naratix; sign in and press Authorize (the page may call the app Codex). In a chat, type @Naratix and ask. On chatgpt.com the plugin arrives once Naratix is listed.
 
 **Claude Code** —
 
