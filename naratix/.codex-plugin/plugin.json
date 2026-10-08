@@ -1,0 +1,51 @@
+{
+    "name": "naratix",
+    "version": "1.4.2",
+    "description": "Get every product in your catalogue ready to sell, from your AI assistant. Naratix brings in products and taxonomies from Mirakl, VTEX or a file, places products in categories, enriches their attributes, improves their photos, writes titles, descriptions and SEO text, checks quality and audits the taxonomy. You review the results in the chat, and Naratix sends them on to your marketplace, store or PIM. It asks before it launches work or sends anything.",
+    "author": {
+        "name": "Naratix"
+    },
+    "homepage": "https://naratix.ai",
+    "repository": "https://github.com/naratix-ai/naratix",
+    "license": "MIT",
+    "keywords": [
+        "naratix",
+        "ecommerce",
+        "product catalogue",
+        "product data",
+        "product attributes",
+        "categories",
+        "product descriptions",
+        "seo",
+        "product images",
+        "data quality",
+        "mirakl",
+        "vtex",
+        "pim"
+    ],
+    "skills": "./skills/",
+    "mcpServers": "./.mcp.json",
+    "interface": {
+        "displayName": "Naratix",
+        "shortDescription": "Get products ready to sell",
+        "longDescription": "Get every product in your catalogue ready to sell, from the chat. Naratix brings in products and taxonomies from Mirakl, VTEX or a file, places products in categories, enriches their attributes, improves their photos, writes titles, descriptions and SEO text, checks quality against your rules and audits your taxonomy. You review the results in the chat, then send them to your Mirakl marketplace, your VTEX store or your PIM. For shops and marketplace sellers. New to Naratix? Create an account at api.naratix.ai. Naratix works only in the shops your account can open, and asks before it launches work or sends anything to a sales channel.",
+        "developerName": "Naratix",
+        "category": "Productivity",
+        "capabilities": [
+            "Read",
+            "Write"
+        ],
+        "websiteURL": "https://naratix.ai",
+        "supportURL": "https://api.naratix.ai/support",
+        "privacyPolicyURL": "https://naratix.ai/privacy",
+        "termsOfServiceURL": "https://naratix.ai/terms",
+        "defaultPrompt": [
+            "Set up my shop in Naratix.",
+            "What is running in my shop right now?",
+            "Check my catalogue for problems."
+        ],
+        "brandColor": "#EE59A1",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+    }
+}
