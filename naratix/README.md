@@ -44,18 +44,19 @@ Start with **"What's in my Naratix shop?"** The assistant finds your shop, tells
 | Improve photos | "Find cleaner photos for my sofas" |
 | Titles and descriptions | "Set up descriptions for my marketplace". The assistant builds a template with you, from descriptions you like or your shop's own pages, and tries it on a product first without changing its live text. |
 | Your own quality rules | "Flag products whose title has no brand". Your rules are checked once products are enriched. |
+| Computed attributes | "Set the size class from the screen diagonal" · "Suggest which attributes can be computed". A rule fills an attribute from the others, tried on your products before it goes live. |
 | Review | "What's waiting for my review?" |
 | Send | "Send the approved fridges". The assistant asks where they go: a file (CSV, Excel or JSON), your VTEX store, your Mirakl marketplace or your PIM; the card then offers that channel's own options. · "What did the marketplace reject?" |
 | Follow | "What's running right now?" |
 
-Your app may also list guided starts as prompts or slash commands: *Set up my shop*, *Enrich my products*, *Fix my taxonomy*, *Set up descriptions*, *Set up titles*, *Check my catalogue*, *Publish to my channel*, *Review my results*.
+Your app may also list guided starts as prompts or slash commands: *Set up my shop*, *Enrich my products*, *Fix my taxonomy*, *Set up descriptions*, *Set up titles*, *Check my catalogue*, *Compute attributes from others*, *Publish to my channel*, *Review my results*.
 
 ## Your data and keys
 
 - **You say yes first.** Every launch and every push waits for your go-ahead.
 - **Your shops only.** The assistant works signed in as you, only in the shops you can open, with your role's permissions.
 - **Keys never enter the chat.** The shop owner types channel keys (Mirakl, VTEX) into Naratix's own form: in the chat where your app shows it, otherwise on the connector's page in Naratix. They go straight to Naratix and are stored encrypted. Your AI assistant never sees them. Never paste a key into a message.
-- **What the plugin holds.** Its skills are instructions your assistant reads; they send nothing: `naratix-operator` for the whole journey, plus `naratix-imports`, `naratix-taxonomy`, `naratix-categories`, `naratix-attributes`, `naratix-images`, `naratix-channels`, `naratix-content` and `naratix-quality`. The Naratix connection, `https://api.naratix.ai/mcp`, carries your requests to Naratix.
+- **What the plugin holds.** Its skills are instructions your assistant reads; they send nothing: `naratix-operator` for the whole journey, plus `naratix-imports`, `naratix-taxonomy`, `naratix-categories`, `naratix-attributes`, `naratix-images`, `naratix-channels`, `naratix-content`, `naratix-quality` and `naratix-computed`. The Naratix connection, `https://api.naratix.ai/mcp`, carries your requests to Naratix.
 
 ## Help
 
