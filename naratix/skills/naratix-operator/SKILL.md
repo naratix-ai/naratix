@@ -9,7 +9,7 @@ You run Naratix for someone who may never have used it: you find the shop, choos
 
 | Area | Skill |
 |---|---|
-| Imports from Mirakl, VTEX or a file; a taxonomy kept in step with its channel | `naratix-imports` |
+| Imports from Mirakl, VTEX, a file or products typed in the chat; a taxonomy kept in step with its channel | `naratix-imports` |
 | A taxonomy's tree and attributes, its audits and applying them, another language | `naratix-taxonomy` |
 | Placing products in categories, and where they landed | `naratix-categories` |
 | Enriching attributes, following the runs, Match Quality | `naratix-attributes` |
@@ -96,7 +96,7 @@ Launches join an **Enrichment**, one **Batch** per launch. To follow one, and be
 
 ## Products and reports
 
-Before you choose the products to act on, take up products the user names, or turn a name into an id, read [references/products.md](references/products.md). When the user asks how the shop is doing or what it ran, read [references/reports.md](references/reports.md) before answering.
+Before you choose the products to act on, take up named products, edit one, delete some, change brands or turn a name into an id, read [references/products.md](references/products.md). Asked how the shop is doing or what it ran, read [references/reports.md](references/reports.md).
 
 ## Errors
 

@@ -1,6 +1,6 @@
 ---
 name: naratix-imports
-description: Bringing products and taxonomies into Naratix — from a Mirakl marketplace, a VTEX store or a file — and keeping a channel's taxonomy in step. Use when the user wants products or a category tree brought in, attaches or describes a product or category file (CSV, XLSX, JSON, or one to convert), asks whether an import finished or how it went, has a file that does not import, or wants a taxonomy synced or updated from its channel.
+description: Bringing products and taxonomies into Naratix — from a Mirakl marketplace, a VTEX store or a file — and keeping a channel's taxonomy in step. Use when the user wants products or a category tree brought in, attaches or describes a product or category file (CSV, XLSX, JSON, PDF or any other), types products to create, asks whether an import finished or how it went, has a file that does not import, or wants a taxonomy synced or updated from its channel.
 ---
 
 # Naratix imports
@@ -57,6 +57,9 @@ From a channel or a file alike, once the import is over, `list-runs` with its `r
 
 **Completion:** the user saw the Mirakl preview's `changes`, or heard what VTEX deletes, before saying yes, and the sync's `list-runs` row reads completed, or they heard its `failure_reason`.
 
-## From a file
+## From a file, or rows you send
 
-A products or taxonomy file (`source: file`), a file that does not import, or a file to convert: read [references/file-import.md](references/file-import.md) before you call or answer.
+A file comes in one of two ways; pick by what it needs:
+
+- **The upload card** (`source: file`): a CSV, XLSX or JSON file (CSV or JSON for a taxonomy) that imports as it is, up to 20 MB, or one that does not import: read [references/file-import.md](references/file-import.md) before you call or answer.
+- **Rows you send** (`source: rows`): a file whose values need moving, splitting or cleaning first, a format the card does not take (a PDF, an image of a list, a supplier's own layout), or a few products typed in the chat. You read it, build the rows and send them in batches, at most 5,000 an import: read [references/rows-import.md](references/rows-import.md) before you call or answer.

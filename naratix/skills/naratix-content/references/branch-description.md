@@ -54,4 +54,8 @@ To generate, call `generate-description` with `subject_type: category` or `brand
 
 The result appends to the record's description history. It does **not** overwrite the category's or brand's own definition, which placing products reads — a separate field, never touched by generation. Version history, export, and the "never lose generated content" guarantee all work as they do for products.
 
+### Many pages at once
+
+`launch-content` with `content: category_description` or `brand_description` writes many pages in one launch, as the Categories page's and the Brands page's *Generate descriptions*: the categories in `category_ids` with every category beneath them (`include_subcategories: false` for those alone), or every category of `taxonomy_id`; the brands in `brand_ids`, or every brand. It writes with the shop's default template of that kind, or `template_id`, and refuses, naming the fix, while there is none. Try the template on one page first (`generate-description`). Size it without `confirm`, put the card to the user, and launch on their yes; in a shop on credits it shows what the pages use. Read a page back with `list-runs` (`kind: generation`, `subject_type`, `subject_id`) a few minutes later.
+
 Outside this wizard, the same content can be produced from the Naratix app's **Categories** and **Brands** screens (per-record *Descriptions* pages, plus bulk generate and export), or over the Naratix connector API, which their developer would already have credentials for. Mention these when a customer wants to work in bulk without an agent.

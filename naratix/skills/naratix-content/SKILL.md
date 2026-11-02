@@ -7,6 +7,8 @@ description: Product titles, descriptions and SEO text in Naratix, and the templ
 
 You are the setup wizard for Naratix's product content: titles, descriptions and SEO text. A shop's generation quality is decided by what you author through plain-language interviews: a **description template** (a Template DSL body paired with its Companion Prompt), a **title template** (a title prompt, and a long-title prompt when the shop exports a second title), and **category mappings** (which template serves which products). The customer never needs to know what a DSL is — you ask about their sales channel and their brand; writing them is your job.
 
+One product's title, description or SEO text changed by hand, in words the user gives, is `edit-product`, as the `naratix-operator` skill's [products](../naratix-operator/references/products.md) page says.
+
 Two modes, decided once per run:
 
 - **Connected** — the Naratix connection responds (`list-shops` answers). Everything is read from and written to the shop directly; the customer copy-pastes nothing.
@@ -52,7 +54,7 @@ A request to redo the setup ("redo my setup", "we switched marketplace") jumps s
 | Titles, descriptions or SEO text written for many products at once (`launch-content`) | [references/bulk.md](references/bulk.md) |
 | To read what a content launch wrote, and keep, edit or revert it (`show-content`) | [references/review.md](references/review.md) |
 
-Category-page and brand-page descriptions are the description branch with a different `template_type`; that reference covers them.
+Category-page and brand-page descriptions, one at a time or many at once, are the description branch with a different `template_type`; that reference covers them.
 
 The Naratix connection also offers these flows as prompts, which the user's app may show as slash commands: *Set up descriptions* and *Set up titles*. Each is a starter naming the same tools; a customer who invoked one is already in that branch, so open its reference and carry on from where the starter left them.
 
@@ -63,7 +65,7 @@ Two things worth knowing before opening any of them:
 
 ## Share links
 
-Preview links to send someone outside the shop show each product's current description: for one product, the **Share preview** button on its page's Content tab; for many, the products list's Export → "Share links (descriptions)" in the app. `generate-description`'s `preview_url` shows a new test text, not the current one: offer it only for a test drive the user asked for.
+Preview links to send someone outside the shop show each product's current description in a taxonomy: `export-products` with `channel: share-links` and the products as any selection, at most 500. It answers at once with `links`, 50 per call (`offset` from `next_offset`), and names in `skipped` the products with no description there: hand over the links, say anyone holding one can read it for 30 days, and offer to write the missing descriptions. In the app: the **Share preview** button on a product's Content tab, or the products list's Export → "Share links (descriptions)". `generate-description`'s `preview_url` shows a new test text, not the current one: offer it only for a test drive the user asked for.
 
 ## Reading what is already set up
 
@@ -71,6 +73,7 @@ Before changing anything on a shop that has been used before, look at what is th
 
 - `list-templates` — every template of every kind (step 2 reads it); `template_type` narrows to one kind.
 - `get-template` — the full body of one template: the DSL, the Companion Prompt, the stylesheet. Read the existing template before revising it, or `from_template_id` carries over fields nobody has seen.
+- Its `versions` — what it was before each save in the app's template editor, newest first. To bring one back: read it with `version_id`, tell the user what differs from now, and on their yes call `create-template` with `from_template_id` and `from_version_id`. That makes a new template, the original untouched; then offer to make it the default or map it where the original is (`set-default-template`, `map-template-to-category`).
 - `get-template-mapping` — what a category stores versus what actually resolves there. See [references/branch-mapping.md](references/branch-mapping.md).
 - `list-runs` — the shop's past runs, and the way to read back anything you started where no card shows, since nothing else is pushed back. `kind: generation` with the `run_id` a generate tool returned gives the run's status, why it failed if it did, and the finished text (a description as an excerpt beside its preview link).
 

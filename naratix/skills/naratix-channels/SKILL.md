@@ -1,6 +1,6 @@
 ---
 name: naratix-channels
-description: Sales channels in Naratix — the connectors to Mirakl marketplaces, VTEX stores and a partner's system through the API connector, their setup, and sending products to them. Use when the user wants products published, pushed or exported (VTEX, Mirakl, a file, the partner's PIM), asks what a marketplace rejected and why, asks which channels the shop is connected to or why one refuses its key, wants one switched on or off or made the default, wants the partner push rules installed, wants a Mirakl attribute mapping generated, or wants products labelled.
+description: Sales channels in Naratix — the connectors to Mirakl marketplaces, VTEX stores and a partner's system through the API connector, their setup, and sending products to them. Use when the user wants products published, pushed or exported (VTEX, Mirakl, a file, the partner's PIM), wants a failed delivery, a partner batch or a push's missing files sent again or Mirakl's reports pulled now, asks what a marketplace rejected and why, asks which channels the shop is connected to or why one refuses its key, wants one switched on or off or made the default, wants the partner push rules installed, wants a Mirakl attribute mapping generated, or wants products labelled.
 ---
 
 # Naratix channels
@@ -56,13 +56,21 @@ A Mirakl marketplace has its own fields. Bringing a taxonomy in from Mirakl, and
 
 **Completion:** the push was confirmed and `list-runs` shows it gone (a Mirakl `upload.state` of `sent`; for VTEX, the user has heard `totals.vtex`'s `sent`, `skipped` and `errors_total` once its `running` is 0), or failed with the reason relayed to the user; a file's link was handed over; for `pim-sync`, the user has the connector page's link.
 
+## Send again
+
+`setup-connector` sends again what did not arrive: an API connector's failed deliveries (`resend_deliveries`) and partner batches (`replay_batch`), a Mirakl push's files that never went (`upload_missing`), and asks Mirakl for its reports now (`pull_reports`). Each send is a push, asked in the chat first. Before any of them, read [references/sending-again.md](references/sending-again.md).
+
 ## Share links
 
 Preview links of products' descriptions, to send someone outside the shop, are the `naratix-content` skill's *Share links*.
 
 ## Labels that push
 
-Some labels push: when a rule sends labelled products to a channel, `add-product-labels` says where they go and waits for `confirm` after the user's yes. Other labels are added at once, and only ever added. Labels are named "Group: Label" (`search-catalog` with `entity: label`) and sit on each product's category in one taxonomy (`taxonomy_id`, else the shop's default), so products with no category there are counted and left out: say how many.
+Some labels push: when a rule sends labelled products to a channel, `add-product-labels` says where they go and waits for `confirm` after the user's yes. Other labels are added at once.
+
+Taking labels off is `add-product-labels` with `remove_labels`, and always waits: without `confirm` it says how many products carry them, names a few, and where taking each off sends the products (`removal_pushes`, a rule on the removal; it cannot be called back). Ask in the chat, through the app's question tool where it has one (the change and "Not now" as choices), plain words otherwise; on the yes call again with `confirm: true`.
+
+Labels are named "Group: Label" (`search-catalog` with `entity: label`) and sit on each product's category in one taxonomy (`taxonomy_id`, else the shop's default), so products with no category there are counted and left out: say how many.
 
 ## When a marketplace rejects products
 

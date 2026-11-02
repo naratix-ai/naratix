@@ -8,6 +8,10 @@ Where a template serves from is decided by mappings, resolved per product by wal
 
 Each kind keeps its own default, so setting a brand default never disturbs the product one. The previous default of that kind hands off explicitly — its flag is cleared, exactly one default remains — and comes back in the response as `previous_default`.
 
+## Ask before it changes
+
+A default or a mapping steers every text written from now on, so neither changes without the user's yes, and no card shows. Called without `confirm`, `set-default-template` and `map-template-to-category` change nothing and answer what would: the default it replaces, or the mapping before and after. Say that, and that texts already written stay; ask through the app's question tool where it has one (the change and "Not now" as choices), plain words otherwise; on the change, call again with the same arguments and `confirm: true`.
+
 ## A category and everything under it
 
 The customer names the area in plain language. `search-catalog` with `entity: category` and the `taxonomy_id` the template serves finds anchor candidates (without it, it searches every taxonomy, and two can share a path); tokens match anywhere in the breadcrumb, so "kitchen knives" finds a *Knives* under *Kitchen*.

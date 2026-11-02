@@ -18,7 +18,7 @@ An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest
 
 ## The Enrichments card
 
-`show-enrichments`, and `control-enrichment` on its Enrichment, draw the Enrichments card. It follows running Enrichments live, pauses, resumes, cancels and retries in place, holds what you sized for the go-ahead, and tells you when one finishes. Its Review press asks in the chat for that kind's review, its context naming the tool and the Enrichment: open it with that tool (`show-mining`, `show-images`, `show-categorization` or `show-content`) and the `enrichment_id`.
+`show-enrichments`, and `control-enrichment` on its Enrichment, draw the Enrichments card. It follows running Enrichments live, pauses, resumes, cancels and retries in place, holds the pause, resume, cancel or retry you sized for the go-ahead, and tells you when one finishes. It approves nothing: an approval you sized waits for the user's yes in the chat, and the user approves by hand in the review cards. Its Review press asks in the chat for that kind's review, its context naming the tool and the Enrichment: open it with that tool (`show-mining`, `show-images`, `show-categorization` or `show-content`) and the `enrichment_id`.
 
 ## Pause, resume, cancel, retry
 

@@ -1,6 +1,6 @@
 ---
 name: naratix-quality
-description: Quality checks in Naratix — how complete and consistent a shop's product data is, the check rules that flag faulty products, and the rules a market expects. Use when the user asks how good their catalogue is or wants it checked, wants a rule that flags products ("flag dresses with no colour", a legal requirement), asks why written content keeps coming out thin, asks what a check found, or wants rules written for a taxonomy.
+description: Quality checks in Naratix — how complete and consistent a shop's product data is, the check rules that flag faulty products, and the rules a market expects. Use when the user asks how good their catalogue is or wants it checked, wants a rule that flags products ("flag dresses with no colour", a legal requirement), wants a rule switched off, changed or deleted or a finding dismissed, wants duplicate products found, asks why written content keeps coming out thin, asks what a check found, or wants rules written for a taxonomy.
 ---
 
 # Naratix quality
@@ -31,7 +31,7 @@ Pick one with `engine`:
    - **The user asked for the whole catalogue**, or a set past the limit: split it into parts yourself, as [references/whole-catalogue.md](references/whole-catalogue.md) says.
    - **The user asked for part of it** and the part is unclear: ask which.
 4. **Follow it.** The call returns at once with a run still going: say so, then follow it as [references/following-a-check.md](references/following-a-check.md) says.
-5. **Read the findings** with the user as the check's answer says (per health dimension, or the products a rule labelled), and name what each implies. Attributes that are simply missing are a job for enriching them, `launch-mining` (the `naratix-attributes` skill), rather than for a better template. A rule the user disagrees with is changed or switched off in Naratix, on the Consistency Rules page (Applicability Rules for applicability); the products are fine.
+5. **Read the findings** with the user as the check's answer says (per health dimension, or the products a rule labelled), and name what each implies. Attributes that are simply missing are a job for enriching them, `launch-mining` (the `naratix-attributes` skill), rather than for a better template. A rule the user disagrees with is changed or switched off with them (*Changing the shop's rules*); the products are fine.
 
 **Completion:** the user knows which engine ran over what, and either has the findings or knows the run is still going and how it will be checked.
 
@@ -74,4 +74,10 @@ A legal or market rule depends on where the shop sells. Whenever you offer the u
 
 When the user says what a faulty product looks like ("flag dresses with no colour", "a title with 'lot de' is suspect"), write it as one check rule with `create-quality-rule`: read [references/own-rule.md](references/own-rule.md) before the first call.
 
-The chat creates rules and nothing more: switching a rule on or off, changing it and deleting it happen in Naratix, on the rule's page the result links.
+## Changing the shop's rules
+
+To switch rules on or off, change one, delete them, or take a finding off a product, read [references/changing-rules.md](references/changing-rules.md) before the first call: `edit-quality-rules` changes nothing until the user's yes in the chat.
+
+## Duplicate products
+
+To find products listed twice or variants of one product, read [references/duplicates.md](references/duplicates.md): two scans of `run-quality-check` that use credits and wait for the user's yes. Merging the groups they find stays in the app.

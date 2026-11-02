@@ -1,6 +1,6 @@
 ---
 name: naratix-taxonomy
-description: Taxonomies and their audits in Naratix — the category tree, each category's attributes and allowed values, and the AI audit that suggests fixes to them. Use when the user wants to see what a taxonomy holds or what came in (its categories, attributes and allowed values), wants it cleaned up, audited or rebuilt, asks how an audit went, wants an audit applied, or needs the tree in another language.
+description: Taxonomies and their audits in Naratix — the category tree, each category's attributes and allowed values, and the AI audit that suggests fixes to them. Use when the user wants to see what a taxonomy holds or what came in (its categories, attributes and allowed values), wants one of them added, renamed, moved or deleted, wants it copied or made the default, wants it cleaned up, audited or rebuilt, asks how an audit went, wants an audit applied, or needs the tree in another language.
 ---
 
 # Naratix taxonomy
@@ -66,10 +66,14 @@ An audit older than the log that proves removing values is safe leaves duplicate
 
 **Completion:** the user chose the way after hearing what each keeps or changes, and `applied` names the taxonomy the audit went into.
 
-`panel_url` opens the app's audits page; `applied.panel_url` opens the taxonomy it was applied to. Editing a taxonomy by hand (renaming, moving, attributes, values) happens in the app.
+`panel_url` opens the app's audits page; `applied.panel_url` opens the taxonomy it was applied to.
+
+## Edit a taxonomy
+
+`edit-taxonomy` adds, renames, moves or deletes a category, an attribute or an allowed value, makes a taxonomy the default, copies it, or places products in a copy as in its original: one change per call, asked in the chat on the before and after its answer gives. Before any call, read [references/editing.md](references/editing.md).
 
 ## Another language
 
-A taxonomy's language never changes. When it is wrong, or the shop needs the same tree in a second language, the user clones it in the app (a Mirakl or VTEX taxonomy in the wrong language is imported again instead, as the `naratix-imports` skill says, since a clone is no longer kept in step with its channel): on the Taxonomies page, **Clone**, pick the target language, and translate the names and values, or the values only. The products' enriched values follow with the products list's **Translate attributes** (Cross-taxonomy). No tool does either yet, so send the user to the app. Both carry the taxonomy and attribute values only: titles and descriptions are written in the new language as below.
+A taxonomy's language never changes. When it is wrong, or the shop needs the same tree in a second language, the user clones it in the app (a Mirakl or VTEX taxonomy in the wrong language is imported again instead, as the `naratix-imports` skill says, since a clone is no longer kept in step with its channel): on the Taxonomies page, **Clone**, pick the target language, and translate the names and values, or the values only. No tool clones a taxonomy, so send the user to the app for it. The products' enriched values then follow into the copy with `launch-translation` (`mode: cross_taxonomy`), as the `naratix-attributes` skill says. Both carry the taxonomy and attribute values only: titles and descriptions are written in the new language as below.
 
 Titles and descriptions in another language need no new taxonomy: a template carries its own language (the `naratix-content` skill). SEO text is written in the taxonomy's language: `generate-seo` takes a `language` for one product, but a bulk launch writes SEO in its taxonomy's, so SEO in a second language at scale needs a taxonomy in that language (a clone, above). Attributes can be enriched in a language with no fitting taxonomy (`launch-mining` with `language`).

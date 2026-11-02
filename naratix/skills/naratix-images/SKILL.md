@@ -7,6 +7,8 @@ description: Improving product photos in Naratix with Image Studio — finding n
 
 **Image Studio** works on a product's photos and proposes **image candidates**: new or improved photos a person approves before they reach the product. It can find new photos of the product on the web, edit the backgrounds of the existing ones, or generate new photos from them. One exception to approval is `fill_empty` (*Improve images*, step 2). Every launch is sized and agreed first (the `naratix-operator` skill's go-ahead rules). A generated photo or a photo set in a scene is marked as AI-made, which the law requires; a photo found on the web comes as it was published.
 
+A change by hand to one product's Gallery (a photo added by its link, removed, reordered or copied to its variations) is `edit-product`, as the `naratix-operator` skill's [products](../naratix-operator/references/products.md) page says.
+
 ## Recommend from the shop's photos
 
 Start from the shop's own gaps, with one `list-products` call: its card is the question's one card, and its `total` the count. Filter it by the gap the user asked about, `photos: without` (no photos) by default, or `photos: one` (a single photo) when they want more photos. Tell the user what you found ("212 products have one photo"), offer the other counts (`photos: one`, `photos: several`, one category) as their next question, then recommend:
@@ -41,7 +43,7 @@ When the main products show no photos, the photos may sit on their variations, a
 
    At most one question is the user's to answer, once, in the chat or on the card: on a `find_images` run without `auto_approve_strong` over products that have no photos, whether those get the strong found photos at once, so the other steps have something to work on (`fill_empty`, which never goes with `auto_approve_strong`); on `edit_backgrounds` with `auto_approve_strong`, whether approved photos go in place of the originals instead of alongside them (`replace_originals`). Explain `fill_empty` before the go-ahead, and pass an answer the user already gave; otherwise the card asks it, and their go-ahead needs it.
 
-   Set only in Image Studio in the app: a gradient background, which websites to take photos from or avoid, and written guidance for the generated photos or for how results are checked. When the user asks for one of these, say so before launching and point to the app (`panel_url`) rather than launching with the defaults.
+   **More settings.** Every other Image Studio setting is a parameter too: upscaling, a gradient, the edits' size, redrawing failed cutouts, instructions for the new photos and which photos they learn from, what the check also looks for, and how Find searches. When the user's words or their photos point to one, ask with the question tool as [references/more-settings.md](references/more-settings.md) says, and say when it uses more credits.
 
    **Draw from a description.** When the products have no photo, offer `generate_variants` with `from_description`:
 
@@ -77,6 +79,6 @@ Approving, dismissing or undoing one by one is the user's call: in the image rev
 
 When the user explicitly asks to approve all the strong ones, it is `control-enrichment` with `action: approve_all_strong` and the `enrichment_id` (the whole Enrichment, never one Batch). Without `confirm` it counts the strong images and changes nothing.
 
-Where they go is the user's answer for every approval, asked once as the `naratix-operator` skill's [cards](../naratix-operator/references/cards.md) page says: beside the photos (`gallery: add`) or in place of the photos they improve (`gallery: replace`). An answer they already gave goes as `gallery` with the count; otherwise the card asks it, or you ask in the chat. Call again with their answer and `confirm: true`. When none of the strong images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
+Where they go is the user's answer for every approval, asked once, in the chat: no card asks it. Through the app's question tool where it has one, three choices: beside the photos (`gallery: add`), in place of the photos they improve (`gallery: replace`), and "Not now". An answer they already gave goes as `gallery` with the count, and only the go-ahead is asked. Call again with their answer and `confirm: true`. When none of the strong images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
 
 **Completion:** the user knows how many results are strong, to review, rejected or failed and where to approve them, and any approve-all ran only on their word, with where the images go answered.
