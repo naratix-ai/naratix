@@ -31,8 +31,8 @@ Pick the kind that says the user's logic. The examples use attribute codes; use 
 - Branches are tried in order; the first whose condition holds gives its `then`. None holds: the `else`, or empty without one. A rule with no branches and only an `else` gives every product of the attribute's categories that value: a category default.
 - A condition (`when`) is an AND group of conditions, or an OR whose children are each an AND group; nothing nests deeper. Each condition: `source`, `operator`, and `value` or `values`.
 - Operators: `equals`, `not_equals`, `in` (with `values`), `contains`, `not_contains`, `is_set`, `is_not_set`, `gt`, `gte`, `lt`, `lte`. Conditions read attribute and field sources only.
-- Text compares ignore case and spaces at the ends, and hold when any of the source's values matches. An empty source makes its condition false, except `is_not_set`.
-- `gt`, `gte`, `lt` and `lte` read the first number in the value whatever its unit: "500 GB" reads as 500, "1 TB" as 1. Check how the values are written before comparing across units.
+- Text compares ignore case and spaces at the ends. `equals`, `in` and `contains` hold when any of the source's values matches, `not_equals` and `not_contains` when none does. An empty source makes its condition false, except `is_not_set`.
+- `gt`, `gte`, `lt` and `lte` read the first number in the source's first value (an attribute holding several is read by its first) whatever its unit: "500 GB" reads as 500, "1 TB" as 1. Check how the values are written before comparing across units.
 - A branch with `"default": true`, and the `else`, only fill: where enrichment found another value, nothing is flagged. A conflict is flagged only under `mine_too`, for a branch without `default`.
 
 ### bucket: a number into ranges
@@ -43,7 +43,7 @@ Pick the kind that says the user's logic. The examples use attribute codes; use 
 ```
 
 - The first bucket whose `max` the value does not exceed gives its `label`. `max` values rise strictly; a last `"max": null` catches the rest, and without one a value above every `max` stays empty.
-- The source must be a plain number: "55" works, "55 inch" leaves the attribute empty. For numbers written with units, use `case` with `lt` and `gte`, which reads the number out of the text.
+- The source must be a plain number: "55" works, "55 inch" fails the rule for that product and leaves the attribute empty. For numbers written with units, use `case` with `lt` and `gte`, which reads the number out of the text.
 - `missing_behavior`: `null-if-source-missing` (the default) or `first-bucket-if-missing`.
 
 ### concat: joined text

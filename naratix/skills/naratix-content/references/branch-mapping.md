@@ -24,6 +24,8 @@ After a default handoff or a re-mapping replaces an old template, offer to archi
 
 Archiving is a soft retirement — nothing already generated is ever lost. The server refuses while the template is still a default or mapped anywhere, and says why: its default role, or how many categories it is mapped to, naming up to three. Relay that and offer to re-point them first, or to clear a mapping that should fall back to its parent's. Past three, the taxonomy's **Template mappings** tab in the app lists every category's template.
 
+An archived template stays readable (`list-templates` with `include_archived: true`) and can be revised into a new live copy with `from_template_id`.
+
 ## Proving it landed
 
 `get-template-mapping` returns, for one category, both the mapping **stored** at that exact category and the template that **resolves** there after the parent-chain walk.

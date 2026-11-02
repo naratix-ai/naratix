@@ -5,7 +5,7 @@ description: Quality checks in Naratix — how complete and consistent a shop's 
 
 # Naratix quality
 
-A **check** labels the products it finds fault with and changes no product data. It makes no AI calls, so offer one whenever the data is in doubt: when the user asks how good their data is, when written content comes out thin in the same places (a template writes only from what the products carry), and before a large content launch. Checks run through the Naratix connection; without it, say so.
+A **check** labels the products it finds fault with and changes no product data. It makes no AI calls, so offer one whenever the data is in doubt: when the user asks how good their data is, when written content comes out thin in the same places (a template writes only from what the products carry), and before a large content launch. For the numbers checks have already found (completion, open findings, applicability coverage), read `analytics-summary` before starting a new check.
 
 The go-ahead, errors and following background work go by the `naratix-operator` skill; filling what a check or rule finds empty goes by the `naratix-attributes` skill. The guided starter *Check my catalogue* walks this skill's order: a user who started it is already here.
 
@@ -25,21 +25,15 @@ Pick one with `engine`:
 
 ## Run a check
 
-1. **Choose the products** with the products list's filters, so a selection here is the same set of products there. With no filter, the check covers the whole shop, the variations of the selected products included. The filters a check usually needs:
-   - `category_id` (from `search-catalog`): that category and everything beneath it; `include_subcategories: false` keeps to the category alone.
-   - `taxonomy_id`: the taxonomy the categorization, enrichment and confidence filters read. A category brings its own.
-   - `review_status`, `labels` (named "Group: Label"; `search-catalog` with `entity: label` finds them) and `health` (flag names). Labels re-check only what is flagged now, which is what a second pass wants. A name the shop does not have comes back with the ones it has.
-   - `product_ids`, `codes`, `external_ids` or `titles` for named products; a variation stands for its main product. The result's `selection` says which were not found: tell the user.
+1. **Choose the products** with the products list's filters, as the `naratix-operator` skill's [products page](../naratix-operator/references/products.md) says; with none, the check covers the whole shop, the variations of the selected products included. To re-check only what is flagged now, pass its `labels` ("Group: Label"; `search-catalog` with `entity: label`).
 2. **Rules first**, for `consistency` and `applicability`: see *Rules have to exist first*.
 3. **Run** `run-quality-check`. `consistency` and `applicability` take any selection, a whole catalogue included; `health` scores every product in one pass, so it caps one run, and over the limit it refuses with the count and the limit.
    - **The user asked for the whole catalogue**, or a set past the limit: split it into parts yourself, as [references/whole-catalogue.md](references/whole-catalogue.md) says.
    - **The user asked for part of it** and the part is unclear: ask which.
 4. **Follow it.** The call returns at once with a run still going: say so, then follow it as [references/following-a-check.md](references/following-a-check.md) says.
-5. **Read the findings** with the user and name what each implies. Attributes that are simply missing are a job for enriching them, `launch-mining` (the `naratix-attributes` skill), rather than for a better template. A rule the user disagrees with is changed or switched off in Naratix, on the Consistency Rules page (Applicability Rules for applicability); the products are fine.
+5. **Read the findings** with the user as the check's answer says (per health dimension, or the products a rule labelled), and name what each implies. Attributes that are simply missing are a job for enriching them, `launch-mining` (the `naratix-attributes` skill), rather than for a better template. A rule the user disagrees with is changed or switched off in Naratix, on the Consistency Rules page (Applicability Rules for applicability); the products are fine.
 
 **Completion:** the user knows which engine ran over what, and either has the findings or knows the run is still going and how it will be checked.
-
-When an attribute Enrichment finishes, its products are checked without asking, as the `naratix-attributes` skill's *Follow the run* says.
 
 ## Rules have to exist first
 

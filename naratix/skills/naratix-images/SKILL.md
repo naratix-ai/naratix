@@ -1,6 +1,6 @@
 ---
 name: naratix-images
-description: Improving product photos in Naratix with Image Studio — finding new photos on the web, cleaning or replacing backgrounds, generating new photos from existing ones — and approving the results. Use when the user wants better, more or cleaner product images, asks what can be done for their photos, asks how an image run went, or wants its results approved.
+description: Improving product photos in Naratix with Image Studio — finding new photos on the web, cleaning or replacing backgrounds, generating new photos from existing ones or, for a product with none, from a description — and approving the results. Use when the user wants better, more or cleaner product images, asks what can be done for their photos, asks how an image run went, or wants its results approved.
 ---
 
 # Naratix images
@@ -13,7 +13,7 @@ Start from the shop's own gaps, with one `list-products` call: its card is the q
 
 | What the shop needs | Run |
 |---|---|
-| Photos for products that have none | `find_images` |
+| Photos for products that have none | `find_images`, or `generate_variants` with `from_description` when the web has none of them or the user asks for made photos (*Draw from a description*) |
 | More photos for products that have one | `find_images` for more of the real product, or `generate_variants` with `variants` 2–3 |
 | A marketplace's white background, colour or shape | `edit_backgrounds` with `background: white` (or `background: colour`), and `aspect` |
 | Lifestyle shots for a category | `edit_backgrounds` or `generate_variants` with `background: scene` and the scene in words |
@@ -35,12 +35,20 @@ When the main products show no photos, the photos may sit on their variations, a
    | `aspect` | 1:1 | The shape edited and generated photos come out in, width:height, such as 4:5 when a marketplace asks for it. |
    | `min_size` | — | With `find_images`: leaves out found photos smaller than this many pixels on a side. |
    | `variants` | 1 | With `generate_variants`: new photos per product, up to 4. |
+   | `from_description` | off | With `generate_variants`: a product with no photo gets its new photos drawn from its data and `description` (*Draw from a description*). |
 
    `auto_approve_strong` approves the strong results without review, which changes what happens to the shop's photos: use it only when the user asks.
 
-   At most one question is the user's to answer, once, in the chat or on the card: on a `find_images` run without `auto_approve_strong` over products that have no photos, whether those get the strong found photos at once, so the other steps have something to work on (`fill_empty`, which never goes with `auto_approve_strong`); on `edit_backgrounds` with `auto_approve_strong`, whether approved photos go in place of the originals instead of alongside them (`replace_originals`, which changes what happens to the shop's photos too: use it only when the user asks). Explain `fill_empty` before the go-ahead, and pass an answer the user already gave; otherwise the card asks it, and their go-ahead needs it.
+   At most one question is the user's to answer, once, in the chat or on the card: on a `find_images` run without `auto_approve_strong` over products that have no photos, whether those get the strong found photos at once, so the other steps have something to work on (`fill_empty`, which never goes with `auto_approve_strong`); on `edit_backgrounds` with `auto_approve_strong`, whether approved photos go in place of the originals instead of alongside them (`replace_originals`). Explain `fill_empty` before the go-ahead, and pass an answer the user already gave; otherwise the card asks it, and their go-ahead needs it.
 
    Set only in Image Studio in the app: a gradient background, which websites to take photos from or avoid, and written guidance for the generated photos or for how results are checked. When the user asks for one of these, say so before launching and point to the app (`panel_url`) rather than launching with the defaults.
+
+   **Draw from a description.** When the products have no photo, offer `generate_variants` with `from_description`:
+
+   - Ask the user for a short description of what the products look like ("a bunch of 5 ripe yellow Cavendish bananas") and pass it as `description`. It is optional, and one description serves every product in the run, so launch a mixed selection per kind of product.
+   - Before the go-ahead, say what it makes: a typical product drawn from each product's title, brand, category, attributes, description and their words, not a photo of the exact product, with no logos, brand names or printed text unless their description asks for them. Each one waits for a person to approve it, even with `auto_approve_strong`.
+   - Products that have photos still generate from them. With `find_images` in the same run, a product whose photos the find fills generates from those; the rest are drawn.
+
 3. **Try 5 products first** when the selection is over about 20 products: pick 5 spread over its categories from one `list-products` page with the user's filters (each row names its category), launch them as `product_ids` with the same choices, and review the results with the user. Then run the rest into the same Enrichment (`add_to_enrichment_id`) with the user's filters again. Those filters still hold the 5 trial products, so say before the go-ahead that those run again and get new candidates; on `photos: without`, the trial products that got photos drop out. The user may decline the trial.
 4. **Size it, then launch**, as the `naratix-operator` skill's *The go-ahead* says: the size gives the products and photos the run covers. Above the per-run limit the note says so, and the go-ahead confirms that size too; a run past the hard ceiling is refused, so split the selection. The launch card follows the run; without one, follow it as the `naratix-operator` skill describes. Products an attributes enrichment is still finding photos for wait for it: the app shows them under "Waiting for attributes", and each starts once that enrichment has finished, so it works on the photos it found. That is the run working, not stuck.
 
@@ -65,8 +73,10 @@ When the main products show no photos, the photos may sit on their variations, a
 - `categories` lists the run's categories 25 at a time: `category_search` finds one by name, and `category_offset` set to the answer's `categories_next_offset` (null on the last page) reads the next 25.
 - Narrow it to the user's ask, as the `naratix-operator` skill's *One card per question* says; the view opens on your filters and shows the run's progress while it goes on.
 
-Approving, dismissing or undoing one by one is the user's call: in the image review the launch links to, or in the image candidates view `show-images` opens in apps that show views. What the user does in the view reaches you as context on your next turn.
+Approving, dismissing or undoing one by one is the user's call: in the image review the launch links to, or in the image candidates view `show-images` opens in apps that show views.
 
-When the user explicitly asks to approve all the strong ones, it is `control-enrichment` with `action: approve_all_strong` and the `enrichment_id`. Without `confirm` it counts the strong images and changes nothing. Where they go is the user's answer for every approval, asked once as the `naratix-operator` skill's [cards](../naratix-operator/references/cards.md) page says: beside the photos (`gallery: add`) or in place of the photos they improve (`gallery: replace`). An answer they already gave goes as `gallery` with the count; otherwise the card asks it, or you ask in the chat. Call again with their answer and `confirm: true`. When none of the strong images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
+When the user explicitly asks to approve all the strong ones, it is `control-enrichment` with `action: approve_all_strong` and the `enrichment_id` (the whole Enrichment, never one Batch). Without `confirm` it counts the strong images and changes nothing.
+
+Where they go is the user's answer for every approval, asked once as the `naratix-operator` skill's [cards](../naratix-operator/references/cards.md) page says: beside the photos (`gallery: add`) or in place of the photos they improve (`gallery: replace`). An answer they already gave goes as `gallery` with the count; otherwise the card asks it, or you ask in the chat. Call again with their answer and `confirm: true`. When none of the strong images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
 
 **Completion:** the user knows how many results are strong, to review, rejected or failed and where to approve them, and any approve-all ran only on their word, with where the images go answered.

@@ -8,7 +8,7 @@ Author the most ambitious template the ceiling allows: a limited channel gets a 
 
 ## Authoring from scratch
 
-1. Confirm the description language (connected: offer the shop's taxonomy languages from `list-taxonomies`; it need not match the interview language). The taxonomy picked here is also **the taxonomy this template serves** — keep its id and pass it to `search-catalog` when finding an anchor, to `list-test-products`, to every generate call and to `launch-content`, or a test drive silently tests the shop default against no enriched attributes. **Romanian gets one more question: with or without diacritics?** The engine strips ă/â/î/ș/ț unless the template says to keep them, and some channels expect ASCII. Never assume either way.
+1. Confirm the description language (connected: offer the shop's taxonomy languages from `list-taxonomies`; it need not match the interview language). The taxonomy picked here is also **the taxonomy this template serves** — keep its id and pass it to `search-catalog` when finding an anchor, to `list-test-products`, to every generate call and to `launch-content`; left out, every generate call reads the shop's default taxonomy instead, whose categories and enriched attributes may not be the ones this template serves. **Romanian gets one more question: with or without diacritics?** The engine strips ă/â/î/ș/ț unless the template says to keep them, and some channels expect ASCII. Never assume either way.
 2. Ask what the description should cover: the sections, the selling angle, and **how long it should be in words**. Length is a setting, not a mood — a customer who says "short, the channel truncates" needs a number (80–150 short, 200–350 standard, 400+ long). Brand voice and audience come from the profile, not from new questions.
    Then, connected, the **tier**: *Pro* is the model every template has used so far; *Lite* is a faster, lighter model. The same template reads differently on each, so test on the tier the customer will use, and on both when they are unsure. Standalone, ask nothing: the app's template editor sets it under **Model**, and a new template writes on Pro.
 3. Compose the **Template DSL body**: syntax, image-placement recipes, the loops-only image rule, and the gotchas that silently break templates are in [template-dsl.md](template-dsl.md) — read it before writing the first line.
@@ -40,13 +40,13 @@ To evolve an existing template, call `create-template` again with `from_template
 
 Check the pair once: the DSL body against §What silently breaks a template, the stylesheet against the look section's rules, and the Companion Prompt against §Rules that make the pair work and [Writing instructions](../../naratix-operator/references/writing-instructions.md).
 
-Then, connected, offer a [test drive](test-drive.md). Seeing one real description beats any description of it.
+Then, connected, offer a [test drive](test-drive.md), passing the new `template_id`; seeing one real description beats any description of it. Once the customer trusts it, ask where it applies — the whole shop or one category and what is under it — by [branch-mapping.md](branch-mapping.md).
 
-**Completion:** the pair is delivered (created on the shop, or both blocks presented), the walk found nothing to fix, and — when derived — the customer confirmed the split and the round-trip check reproduced an example.
+**Completion:** the pair is delivered (created on the shop, or both blocks presented), the walk found nothing to fix, and — when derived — the customer confirmed the split and the round-trip check reproduced an example; and the customer chose where the template applies (or kept it unmapped on purpose).
 
 ## Category and brand page descriptions
 
-Naratix writes SEO descriptions for **category pages** and **brand pages** too. Same shape: a template carries the kind of page it writes for, and a shop holds a default template per kind.
+Naratix writes SEO descriptions for **category pages** and **brand pages** too. Same shape: a template carries the kind of page it writes for, and a shop holds a default template per kind. Their default serves every page of that kind: `map-template-to-category` takes product title and description templates only.
 
 Author one exactly as above, passing `template_type: category-description` or `brand-description`. These need the connection: the app creates product description templates only, so standalone, offer the copy blocks and say a category or brand page template cannot be created in the app yet. `template_type` is the one vocabulary every template tool speaks; `list-templates` shows every kind and narrows to one when passed.
 

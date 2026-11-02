@@ -4,9 +4,10 @@ The Companion Prompt is the Template DSL body's inseparable other half. It carri
 
 ## What the model already receives
 
-Every description call is built the same way. The Companion Prompt adds to it and never repeats it:
+Every product description call is built the same way (a category or brand page has its own built-in rules). The Companion Prompt adds to it and never repeats it:
 
-- **Naratix's own rules**, before the Companion Prompt: the product data is the only source of facts; typical statements about what a product of this kind does are fine, invented specifics are not; no prices, stock, warranties, promotions, internal codes, comparisons with other brands or superlatives; brand and model names as the data writes them; write in the description's language and translate everything else; only text in each field, since the template adds headings and layout; no notes about the data or the instructions.
+- **Naratix's own rules**, before the Companion Prompt: the product data is the only source of facts; typical statements about what a product of this kind does are fine, invented specifics are not; no prices, stock, warranties, promotions, awards, internal codes, comparisons with other brands or superlatives; brand and model names as the data writes them; write in the description's language and translate everything else; only text in each field, since the template adds headings and layout; no notes about the data or the instructions.
+- **Romanian with diacritics on:** a rule that every word carries ă/â/î/ș/ț, comma-below.
 - **The language and the total length**, from the template's settings: "about N words in total; when the template instructions give a length per section, follow those".
 - **The placeholder names**, as the names of the fields the model fills. A name is an instruction: `benefit_heading` asks for a heading about a benefit, `creative_header` invites wordplay.
 - **The product data** as the message: title, category path, the feed's description, the enriched attributes.

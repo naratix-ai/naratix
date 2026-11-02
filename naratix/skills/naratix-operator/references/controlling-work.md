@@ -14,7 +14,7 @@ A paused Enrichment has not finished: it is on hold until resumed.
 
 ## Reading its counts
 
-An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest in `list-runs`; `products`, `done` and the rest in `show-enrichments`) cover every Batch it holds: report those. `batches` lists only the newest 20 live Batches, the newest 20 finished ones and the newest of each kind of work, and `batches_total` says how many it holds, so never add up `batches` for a total. A Batch's `number` is its Batch # in the app: name a Batch by it. `unplaced` (in `show-enrichments`; in `list-runs`, a categorization Batch's `skipped`, and each product's `outcome` `skipped`) counts the products categorization could not place, with too little data to go on: each kept its category, or stays uncategorized if it had none. They are not done, so say how many. `show-enrichments` reads the 20 newest open Enrichments: when `more_open` is true, `list-runs` with `kind: enrichment` and `status: open` lists them all.
+An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest in `list-runs`; `products`, `done` and the rest in `show-enrichments`) cover every Batch it holds: report those. `batches` lists only the newest 20 live Batches, the newest 20 finished ones and the newest of each kind of work, and `batches_total` says how many it holds, so never add up `batches` for a total. A Batch's `number` is its Batch # in the app: name a Batch by it. `unplaced` (on the Enrichment in `show-enrichments` and in `list-runs`, where the Enrichment's `skipped` includes them; on a categorization Batch in `list-runs`, its `skipped`; on each product's run, `outcome` `skipped`) counts the products categorization could not place, with too little data to go on: each kept its category, or stays uncategorized if it had none. They are not done, so say how many. `show-enrichments` reads the 20 newest open Enrichments: when `more_open` is true, `list-runs` with `kind: enrichment` and `status: open` lists them all.
 
 ## The Enrichments card
 
@@ -24,9 +24,9 @@ An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest
 
 `control-enrichment` pauses, resumes, cancels or retries an Enrichment or one Batch, on the user's word only:
 
-- **pause** holds it at once; nothing is lost.
+- **pause** takes effect at once: running steps finish, nothing new starts, nothing is lost.
 - **cancel** cannot be undone: unfinished products are dropped. It needs `confirm` after the user's yes.
 - **resume** and the retries start work again: size first, then `confirm`. Offer **retry_failures**, which re-runs only what failed; **retry** re-runs every product, the successes too, so run it only when the user asks for exactly that.
 - **approve_all_exact** is a verdict on the results; **approve_all_strong** only puts the strong images in the products' photos and leaves their verdicts as they are. Both count first, then `confirm` on the user's word.
 
-Completion: the user said which action, and heard what it keeps or loses before any `confirm`.
+**Completion:** the user said which action, and heard what it keeps or loses before any `confirm`.

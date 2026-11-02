@@ -64,7 +64,7 @@ Images come exclusively from these two constructs. Both clamp to the images the 
 
 Its length follows the engine's `image_count` (*Engine-reserved names*, above).
 
-**Hard guardrail**: indexed refs `{{img::N}}` / `{{img::N-}}` exist in the engine but render a literal `NO_IMAGE` string into the description when the product lacks that image. Never emit them; a loop construct expresses every placement.
+**Hard guardrail**: indexed refs exist in the engine, and both can print a literal `NO_IMAGE` into the description: `{{img::N}}` when the product lacks image N, `{{img::N-}}` (which repeats an earlier image instead) when it has none. Express every placement with a loop construct.
 
 ### Placement recipes (from the profile's `image_placement`)
 
@@ -112,7 +112,7 @@ The stylesheet must be self-contained: no `@import` — the shared preview block
 
 The DSL has no conditional, so a section built from a loop still renders its surrounding markup when the LLM returns an empty array. A product with no attributes leaves a spec heading above an empty `<table>` — observed on a real generation, not theoretical.
 
-Put a section's heading **inside** its loop whenever the section may legitimately be empty:
+A heading outside a loop renders above an empty array, and one inside it repeats per item. Where a section may legitimately be empty, let the rows carry their own labels and leave the heading out, as below:
 
 ```
 @foreach({{array<string::label, string::value>::specs}} as $spec)
@@ -120,7 +120,7 @@ Put a section's heading **inside** its loop whenever the section may legitimatel
 @end
 ```
 
-…with the `<h2>` and `<table>` only where specs are guaranteed. When they aren't, prefer a single loop that carries its own heading row, or accept that thin products show an empty block and tell the customer so. The Companion Prompt's "never invent a value" rule is what makes the array empty rather than fabricated — that's the guardrail working, not a fault.
+…with the `<h2>` and `<table>` only where specs are guaranteed; otherwise keep the heading and tell the customer that thin products show an empty block. Naratix's own facts rule (the product data is the only source of facts) is what makes the array empty rather than fabricated — that's the guardrail working, not a fault.
 
 ## What silently breaks a template
 
@@ -164,4 +164,4 @@ Every placeholder name here (`headline`, `intro`, `shown_image_count`, `features
 
 ## Around the body
 
-The template's header and footer fields are static HTML prepended/appended to every description — they are not DSL-parsed. Language and target length come from the template itself (its language and description-length settings), not from the DSL body.
+The template's header and footer fields are static HTML prepended/appended to every description — they are not DSL-parsed. `create-template` does not set them: the app's editor does (Header (before the body), Footer (after the body)), and a revision keeps the original's. Language and target length come from the template itself (its language and description-length settings), not from the DSL body.

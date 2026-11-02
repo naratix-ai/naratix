@@ -1,6 +1,6 @@
 ---
 name: naratix-categories
-description: Placing products in categories in Naratix, and reading where they landed. Use when the user wants products categorized or re-categorized, asks why a product sits in a category, wants to know which products could not be placed, or wants categories confirmed.
+description: Placing products in categories in Naratix, and reading where they landed. Use when the user wants products categorized, re-categorized or sorted into their taxonomy; asks why a product sits in a category or wants one moved; wants to know which products could not be placed or which placements are doubtful; or wants categories confirmed, labelled, or set to Draft or In review.
 ---
 
 # Naratix categories
@@ -11,6 +11,8 @@ A taxonomy is the category tree a shop sells in. **Categorization** places each 
 
 1. **Pick the products** with the products list's filters on `launch-categorization`: uncategorized ones (`categorization: uncategorized` with a `taxonomy_id`), a search, labels, named products. The taxonomy is the selection's, else the shop's default.
    - When the user means all their products ("my products"), use `categorization: uncategorized`.
+   - To re-categorize products already placed, leave `categorization` out: each moves to the category ranked first, a category set by hand too, and keeps the enriched values of its old one. Say both before the go-ahead.
+   - To re-check doubtful placements, select them with `confidence` (`low`, `unknown`) and the `taxonomy_id`.
    - Pass an `import_id` only when they mean one import.
    - An import matched to a taxonomy placed most of its products by the channel's own categories, so add that `taxonomy_id` (its `list-runs` row has it) and `categorization: uncategorized` to place only the rest.
    - Products a file brought in before their taxonomy existed have no taxonomy on their import row: take the `taxonomy_id` from the taxonomy's own import row in `list-runs`, or rely on the shop's default.
@@ -21,20 +23,23 @@ A taxonomy is the category tree a shop sells in. **Categorization** places each 
 
 ## Read where products landed
 
-`list-runs` with `kind: categorization` returns each product's run, from every categorization in the shop: the ranked `candidates` (path, confidence, reasoning) and the `outcome`. `auto_picked`: placed in the first candidate. `needs_manual` or `below_threshold`: the best candidate was not sure enough, so the product waits for the user to pick one in its view (`show-categorization` with its `product_id`). `skipped`: the product could not be placed, one of the Enrichment's `unplaced` (the `naratix-operator` skill's [controlling-work](../naratix-operator/references/controlling-work.md) page says what that leaves).
+`list-runs` with `kind: categorization` returns the shop's newest 100 product runs, narrowed with `product_id`, `external_id` or `status`: the ranked `candidates` (path, confidence, reasoning) and the `outcome`. `auto_picked`: placed in the first candidate. `needs_manual` or `below_threshold` (only on products the partner's API connector sent with a confidence threshold; a launch from the chat or the app places or skips): the best candidate was not sure enough, so the product waits for the user to pick one in its view (`show-categorization` with its `product_id`). `skipped`: the product could not be placed, one of the Enrichment's `unplaced` (the `naratix-operator` skill's [controlling-work](../naratix-operator/references/controlling-work.md) page says what that leaves).
 
 `show-categorization` reads the same as the app shows it, one thing at a time: `enrichment_id` gives a categorization Enrichment's products with their old and new category and verdict (`filter`: changed, unchanged, failed, corrected); `product_id` gives one product's category, the suggestions of its latest run and who set what when, plus its labels; `category_id` gives a category's labels and lifecycle.
 
-Where the app shows views, these reads open as one, and the user fixes things there: a product's category from the run, a suggestion chosen, a category changed, a product's or a category's labels, Draft or In review. In the products list (`list-products`), the user can also pick products and assign them one category. A label change that sends something to a channel asks the user first, in the view. Without views, a product's category is changed on the review the launch links to, and a category's labels, Draft and In review on the Categories page: say where, and carry on when the user is back. A changed category leaves the product's enriched values from the old one: offer to enrich it again (the `naratix-attributes` skill).
+Where the app shows views, these reads open as one, and the user fixes things there:
+
+- a product's category (from the run, a suggestion or the tree), a product's or a category's labels, Draft or In review; a label change that sends something to a channel asks the user first, in the view;
+- in the products list (`list-products`), picked products assigned one category.
+
+Without views, a product's category is changed on the review the launch links to, and a category's labels, Draft and In review on the Categories page: say where, and carry on when the user is back. A changed category leaves the product's enriched values from the old one: offer to enrich it again (the `naratix-attributes` skill).
 
 ## Confirm categories
 
-A category's lifecycle runs Draft, In review, Confirmed. Confirmed is the one the assistant sets, with `confirm-categories`, and only on the user's word: in a shop connected to a partner through the API connector, confirming is what sends the categories to that partner. Treat it as a push.
+A category's lifecycle runs Draft, In review, Confirmed. Confirmed is the one the assistant sets, with `confirm-categories`, and only on the user's word: where the shop's push rules listen to Confirmed (the standard rules an API connector gets, the `naratix-channels` skill), confirming sends the categories to that partner. Treat it as a push.
 
 1. Find the categories with `search-catalog`, one taxonomy per call: `search-catalog` searches every taxonomy, so pass its `taxonomy_id`, and search in that taxonomy's language (its answer names it), translating the user's words. Each one brings its subcategories unless `include_subcategories` is false.
 2. Call without `confirm`: the result gives how many categories it covers and where they go. Tell the user both, and that a sent confirmation cannot be called back and the categories the partner accepts are then locked; with an empty `pushes_to` they are only marked.
 3. Call again with `confirm: true` after their yes.
 
 **Completion:** the user heard how many categories it covers and where they go before their yes, and the second call returned `applied` true.
-
-Draft and In review are set in the category's view (`show-categorization` with its `category_id`), or on the app's Categories page.

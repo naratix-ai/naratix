@@ -13,6 +13,8 @@ An **audit** has the AI review the attributes and values of the taxonomy's leaf 
 
 When the user asks what came in, or whether a taxonomy needs an audit, walk it a level at a time: `list-taxonomies` with its `taxonomy_id` lists the top categories, and with a `category_id` that category's subcategories, each with how many subcategories and attributes of its own it has (attached to it, or through its attribute groups). `search-catalog` with `entity: attribute` and the `category_id` lists a category's attributes, its own and those it inherits. In apps that show views, the user clicks through the categories, attributes and allowed values themselves, and a member who may start an audit can ask for one from there; call again only for what they ask about.
 
+Where no view shows, an attribute's allowed values are read from the `allowed_values_uri` `search-catalog` gives (1,000 a page), and the whole tree in one read from the taxonomy's `export_uri` (`list-taxonomies`).
+
 ## Audit a taxonomy
 
 Your first output in the turn is a chat message saying what an audit is: the AI reviews each leaf category's attributes and values (names, types, values that repeat, missing attributes, allowed values); it only reads and suggests, nothing changes until they apply it, and its card shows how far it has got. Give no duration. Send it before `list-shops`, `list-taxonomies` or `start-audit`: the preview card has a Start button, so the user must know what it starts before it appears.
@@ -42,7 +44,7 @@ Your first output in the turn is a chat message saying what an audit is: the AI 
    - `category_id` from that list reads one category: every suggestion, and the attributes it leaves as they are.
    - `change`, `category` or `attribute` narrow either.
 4. Before asking how to apply it, explain `apply`: what each mode takes into a new taxonomy and in place, and why a way is not open (a treat-as-local audit, an audit already implemented). Name each mode by its `apply.modes[].label`, in the user's language; its `apply_mode` code goes only into the call.
-5. End each answer with the next step you can take for the user, as a question: open a category, or show one kind of change. While `applied` is null, also offer to apply it their way; once it is applied, offer the next step the result's note names instead: placing products in the new taxonomy, or enriching the attributes an in-place apply changed. A user who has never seen an audit should never have to guess what comes next.
+5. Close on one question: open a category or show one kind of change; while `applied` is null, also offer to apply it their way; once it is applied, offer what the answer's `Next:` names (placing products in the new taxonomy, or enriching the attributes an in-place apply changed).
 
 ## Apply an audit
 
@@ -70,4 +72,4 @@ An audit older than the log that proves removing values is safe leaves duplicate
 
 A taxonomy's language never changes. When it is wrong, or the shop needs the same tree in a second language, the user clones it in the app (a Mirakl or VTEX taxonomy in the wrong language is imported again instead, as the `naratix-imports` skill says, since a clone is no longer kept in step with its channel): on the Taxonomies page, **Clone**, pick the target language, and translate the names and values, or the values only. The products' enriched values follow with the products list's **Translate attributes** (Cross-taxonomy). No tool does either yet, so send the user to the app. Both carry the taxonomy and attribute values only: titles and descriptions are written in the new language as below.
 
-Titles, descriptions and SEO text in another language need no new taxonomy: a template carries its own language (the `naratix-content` skill), and `generate-seo` takes a `language`. Attributes can be enriched in a language with no fitting taxonomy (`launch-mining` with `language`).
+Titles and descriptions in another language need no new taxonomy: a template carries its own language (the `naratix-content` skill). SEO text is written in the taxonomy's language: `generate-seo` takes a `language` for one product, but a bulk launch writes SEO in its taxonomy's, so SEO in a second language at scale needs a taxonomy in that language (a clone, above). Attributes can be enriched in a language with no fitting taxonomy (`launch-mining` with `language`).

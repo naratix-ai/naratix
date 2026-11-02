@@ -1,6 +1,6 @@
 ---
 name: naratix-channels
-description: Sales channels in Naratix — the connectors to Mirakl marketplaces, VTEX stores and a partner's system through the API connector, their setup, and sending products to them. Use when the user wants products pushed or exported (VTEX, Mirakl, a file, the partner's PIM), asks what a marketplace rejected and why, asks which channels the shop is connected to, wants one switched on or off or made the default, wants the partner push rules installed, wants a Mirakl attribute mapping generated, or wants products labelled.
+description: Sales channels in Naratix — the connectors to Mirakl marketplaces, VTEX stores and a partner's system through the API connector, their setup, and sending products to them. Use when the user wants products published, pushed or exported (VTEX, Mirakl, a file, the partner's PIM), asks what a marketplace rejected and why, asks which channels the shop is connected to or why one refuses its key, wants one switched on or off or made the default, wants the partner push rules installed, wants a Mirakl attribute mapping generated, or wants products labelled.
 ---
 
 # Naratix channels
@@ -9,7 +9,7 @@ A **connector** links the shop to a place its products go: a Mirakl marketplace,
 
 ## See the channels
 
-`list-connectors` shows each connector's type, whether it is on, whether it is the default, and for API connectors whether deliveries to the partner are healthy. Credentials never appear there.
+`list-connectors` shows each connector's type, whether it is on and whether it is the default. For an API connector it shows its delivery `health` (`not_provisioned`: the partner's inbound credentials are not generated yet) and its `push_rules`. For a Mirakl connector, `refused_by_channel` true means Mirakl refused its key in the last hour: open its form, as *Credentials* says. Credentials never appear there.
 
 ## Set up a channel
 
@@ -23,13 +23,13 @@ Only the shop's owner changes connectors, as in the app. With `setup-connector`:
 
 Credentials — a VTEX app token, a Mirakl key, a partner's client secret — are typed by the shop's owner in the form `setup-connector` shows, never in the chat. `credentials` with the `connector_id` opens the form for an existing connector; with `type` (`vtex`, `mirakl` or `api`) instead, the form creates a new one. Ask for no token, key or secret yourself, and pass none to any tool; when the user pastes one into the chat anyway, tell them to change it at its source, since the chat keeps it.
 
-Before you open the form, when a launch names a missing key, and when the form answers, read [references/credentials.md](references/credentials.md).
+Before you open the form, when a launch names a missing key, when `list-connectors` reads `refused_by_channel`, and when the form answers, read [references/credentials.md](references/credentials.md).
 
 ## Map attributes to Mirakl
 
 A Mirakl marketplace has its own fields. Bringing a taxonomy in from Mirakl, and a sync that changes it, already generate its mapping, so `generate-mirakl-mapping` is for generating it again, on the taxonomy brought in from that marketplace (the shop's owner only). It has the AI work out which of the taxonomy's attributes and values fill which Mirakl field; a taxonomy with no marketplace fields is refused before anything starts. Fields already picked on the Mapping tab are kept and the AI fills the empty ones, and the result is live for the next import or export with no review step.
 
-1. Pass the Mirakl `connector_id` and the `taxonomy_id`. Say both, get the user's yes, then call with `confirm: true`.
+1. Pass the Mirakl `connector_id` and the `taxonomy_id`, and get the user's yes as the `naratix-operator` skill's *The go-ahead* says.
 2. Its card follows it; where no card shows, `list-runs` with `kind: activity`, the `since` it returned and `search: mapping` reads the outcome: the entry whose title ends in this taxonomy's name; a title that begins "Could not" means it failed.
 3. The user is notified when it is ready; the Mapping tab shows it, and any field can be changed there.
 
@@ -39,47 +39,10 @@ A Mirakl marketplace has its own fields. Bringing a taxonomy in from Mirakl, and
 
 `export-products` sends a selection, chosen with the products list's filters, to one `channel`, as the products list's Export menu does.
 
+0. **The products.** Reviewed products are the usual choice (`review_status: approved`); show the selection with `list-products` before the preview.
 1. **Ask the user where the products go** unless they said: a file, a VTEX store, a Mirakl marketplace or the partner's PIM. Their answer also settles what is sent: Mirakl upload or files only (`upload`), VTEX images only (`images_only`) and the PIM mode (`mode`).
 2. **The connector.** For a `vtex` or `mirakl` push, call `list-connectors` first, even when the user named the channel, and name the target connector to them (the default one, switched on); with none switched on, or several, ask which before the preview, and pass it as `connector_id`. A `pim-sync` push goes through the shop's API connector, which its preview's `target` names, and takes no `connector_id`; when that is not the partner the user means, the owner switches the other API connector off (`setup-connector`, `disable`) before the push.
-3. **The channel's options**, below. Every other option left out takes the app's default, and the file and VTEX cards show them picked for the user to change. An option is refused on a channel it is not for.
-
-### `file`
-
-A file to download for 30 days, always with each product's code, external ID, category and title.
-
-- `format`: `csv` (default), `xlsx` or `json`.
-- `split_mode`: `single` (default, one file) or `per_category` (one file per category).
-- `columns`: what else the file holds, any of `titles`, `descriptions`, `seo`, `attributes`, `images`, `category_data`, `source_urls`, `scraped_pages`, `harvests`, `labels`. Default: titles, descriptions, SEO text and attributes.
-- With `attributes`: `attributes_format` is `dedicated_columns` (default, one column each) or `json` (one column); `unit_in_attribute_header: true` puts the unit in each column name.
-- With `images`: `images_format` is `columns` (default, one per image) or `single` (one column).
-
-A product with no enriched attributes or title in the taxonomy is left out of the file and listed in gap-report.csv in the download: the preview counts them (`left_out`), so offer to enrich them first. Renaming columns and the fallback to unrestricted values are done in the app: the products list's Export to file.
-
-### `vtex`
-
-Products already on the VTEX store are updated with their brand, SKUs, specifications and SKU images; products not yet on VTEX are skipped. The preview counts only the products that go, those already on VTEX with a brand (`products`); it names how many are not on VTEX yet (`not_on_vtex`) and how many on VTEX have no brand, which VTEX requires, and its sample shows only products that go. When none would go it refuses and says why.
-
-- `images_only: true` sends only the variations' images, to SKUs already on VTEX; it takes none of the options below.
-- `specifications_source`: `default` (each product's and variation's own) or `aggregation` (the variations' alternative attributes gathered on the product).
-- `remove_diacritics`: Romanian diacritics are stripped from text fields unless `false`.
-- `skip_variations: true` sends main products without their variations. A main product with no variations stops the push; pass it only once the user agrees to send those without variations.
-- `skip_variations_images: true` leaves the variations' images out.
-
-Done in the app, never from the chat: creating products on VTEX (the products list's Export to VTEX with "Create products if not existent in VTEX" on) and setting brands.
-
-A product whose category has no VTEX category is skipped while sending, and the preview cannot count it. The Exports page, the export's `panel_url` in `list-runs`, lists every skipped product with its reason. Each reason is fixed in the app, then the products are pushed again:
-
-- **Its category has no VTEX category**: move the product into a category imported from VTEX, or send the categories to VTEX (Categories page, Export → VTEX categories) and then the attributes (Attributes page, Export to VTEX).
-- **It has no brand**: set the brand on the product.
-- **It is not on VTEX yet**: the products list's Export to VTEX, with "Create products if not existent in VTEX" on.
-
-### `mirakl`
-
-Files built from the Mirakl mapping are uploaded, and the marketplace then accepts or rejects each product. The shop's default Mirakl connector uploads. With none, only the files are built, and the preview names any other connector switched on: ask the user which marketplace, then pass its `connector_id`. `upload: false` builds the files only, even with a default connector.
-
-### `pim-sync`
-
-The products go to the partner's PIM through the API connector; the shop's owner only. They go as they are now; `mode: enrich_then_push` enriches each again first, which counts as a launch. A selection above 5,000 products is refused before the card: narrow it into parts, by category for instance, each its own push and its own yes.
+3. **The channel's options**: before you set any, or say what a channel sends or skips, read [references/export-options.md](references/export-options.md). Every option left out takes the app's default, and the file and VTEX cards show them picked for the user to change. An option is refused on a channel it is not for.
 
 ### The push
 
@@ -87,7 +50,7 @@ The products go to the partner's PIM through the API connector; the shop's owner
 2. Call again with `confirm: true` after their yes, with the options the card shows. A push to a channel cannot be called back. The same selection sent to the same place with the same options twice within ten minutes is refused the second time; another format or other options make a new export.
 3. Follow it as the `naratix-operator` skill's *Following work* says. Where no card shows, read only this push: `list-runs` with `kind: export` and the `since`, `connector_id` and `taxonomy_id` it returned, leaving out any it did not return or returned null. Without them, its rows and `totals` count every push since. A Mirakl push's id for `mirakl-reports` is its row's `export_id` there, not a run id:
    - a file, or Mirakl files only: `list-runs` hands over its `download_url` once it is done; a file's row is the one with the `export_id` the push returned. Give the user no link before that. Mirakl files that read `files` 0 once done had nothing to build: say so, and that the export's `panel_url` shows why.
-   - a Mirakl push: `status` done means the files are built. The upload goes after that, when the marketplace next takes one, and each row's `upload.state` says where it stands: `waiting` (`next_upload_at` is the next slot), `sending`, `sent`, `failed` (pass its `error` on as written: it says what to do next) or `nothing_sent` (nothing was there to upload; the export's `panel_url` shows why). Tell the user the products were sent only once it reads `sent`; `totals.mirakl` reading `running` and `uploads_pending` 0 says the whole push has gone.
+   - a Mirakl push: `status` done means the files are built. The upload goes after that, when the marketplace next takes one, and each row's `upload.state` says where it stands: `waiting` (`next_upload_at` is the next slot), `sending`, `sent`, `failed` (pass its `error` on as written: it says what to do next) or `nothing_sent` (nothing was there to upload; the export's `panel_url` shows why). Tell the user the products were sent only once it reads `sent`; `totals.mirakl` reading `running` and `uploads_pending` 0 says the whole push has gone; `uploads_failed` above 0 says part of it did not (each failed row's `error` says why).
    - a VTEX push writes one row per 50 products: report its `totals.vtex` (`sent`, the products VTEX received, `skipped` and `errors_total`) once its `running` is 0, never one row's counts or the size of the selection.
    - a `pim-sync` push is followed on the API connector's page in the app, which its `panel_url` opens.
 
@@ -99,7 +62,7 @@ Preview links of products' descriptions, to send someone outside the shop, are t
 
 ## Labels that push
 
-Some labels push: when a rule sends labelled products to a channel, `add-product-labels` says where they go and waits for `confirm` after the user's yes. Other labels are added at once, and only ever added.
+Some labels push: when a rule sends labelled products to a channel, `add-product-labels` says where they go and waits for `confirm` after the user's yes. Other labels are added at once, and only ever added. Labels are named "Group: Label" (`search-catalog` with `entity: label`) and sit on each product's category in one taxonomy (`taxonomy_id`, else the shop's default), so products with no category there are counted and left out: say how many.
 
 ## When a marketplace rejects products
 
