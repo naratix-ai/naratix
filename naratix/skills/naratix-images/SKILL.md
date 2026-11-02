@@ -77,8 +77,8 @@ When the main products show no photos, the photos may sit on their variations, a
 
 Approving, dismissing or undoing one by one is the user's call: in the image review the launch links to, or in the image candidates view `show-images` opens in apps that show views.
 
-When the user explicitly asks to approve all the strong ones, it is `control-enrichment` with `action: approve_all_strong` and the `enrichment_id` (the whole Enrichment, never one Batch). Without `confirm` it counts the strong images and changes nothing.
+When the user explicitly asks to approve them all, it is `control-enrichment` with `action: approve_all` and the `enrichment_id` (the whole Enrichment, never one Batch): every image waiting for review, strong or in review, as the app's **Approve all**. Without `confirm` it counts them and changes nothing.
 
-Where they go is the user's answer for every approval, asked once, in the chat: no card asks it. Through the app's question tool where it has one, three choices: beside the photos (`gallery: add`), in place of the photos they improve (`gallery: replace`), and "Not now". An answer they already gave goes as `gallery` with the count, and only the go-ahead is asked. Call again with their answer and `confirm: true`. When none of the strong images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
+Where they go is the user's answer for every approval, asked once, in the chat: no card asks it. Through the app's question tool where it has one, three choices: beside the photos (`gallery: add`), in place of the photos they improve (`gallery: replace`), and "Not now". An answer they already gave goes as `gallery` with the count, and only the go-ahead is asked. Call again with their answer and `confirm: true`. When none of the images improves a photo (generated variants, photos found), the count says so and there is nothing to ask: they are added.
 
 **Completion:** the user knows how many results are strong, to review, rejected or failed and where to approve them, and any approve-all ran only on their word, with where the images go answered.

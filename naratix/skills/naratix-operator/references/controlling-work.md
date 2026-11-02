@@ -27,6 +27,6 @@ An Enrichment's own counts (`total_products`, `completed`, `failed` and the rest
 - **pause** takes effect at once: running steps finish, nothing new starts, nothing is lost.
 - **cancel** cannot be undone: unfinished products are dropped. It needs `confirm` after the user's yes.
 - **resume** and the retries start work again: size first, then `confirm`. Offer **retry_failures**, which re-runs only what failed; **retry** re-runs every product, the successes too, so run it only when the user asks for exactly that.
-- **approve_all_exact** is a verdict on the results; **approve_all_strong** only puts the strong images in the products' photos and leaves their verdicts as they are. Both count first, then `confirm` on the user's word.
+- **approve_all** approves everything still waiting for review in the Enrichment: it marks its enriched products Approved, a verdict, and puts its images in the products' photos, which leaves their verdicts as they are. It counts first, then `confirm` on the user's word.
 
 **Completion:** the user said which action, and heard what it keeps or loses before any `confirm`.
