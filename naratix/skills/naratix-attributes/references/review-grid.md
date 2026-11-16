@@ -1,11 +1,11 @@
 # Reading and reviewing the results
 
-`show-mining` with the `enrichment_id` reads the results as the review grid shows them, one category at a time: each product's review status and its values with their Match Quality, and the category's totals.
+`show-mining` with the `enrichment_id` reads the results as the review grid shows them, one category at a time: each product's review status and its values, a Conflict marked, and the category's totals.
 
 - **Its categories.** Its `categories` lists the Enrichment's categories 50 at a time: `category_search` finds one by name, and `category_offset` set to the answer's `categories_next_offset` (null on the last page) reads the next 50.
-- **The values it keeps.** Its default `cells: attention` keeps only the values a person should look at; `cells: all` keeps every column (keep `size` at its default 25 then). A search is refused on a category of more than 20,000 products. A page too large for one answer ends early: read on with `next_after` as `after`; named products that did not fit are listed in its note to ask for again.
+- **The values it keeps.** Its default `cells: attention` leaves out the empty values nothing was found for, unless a check or a marketplace flagged them; `cells: all` keeps every column (keep `size` at its default 25 then). A search is refused on a category of more than 20,000 products. A page too large for one answer ends early: read on with `next_after` as `after`; named products that did not fit are listed in its note to ask for again.
 - **Narrow it to the user's ask**, as the `naratix-operator` skill's *One card per question* says.
-- **Per attribute.** For an Enrichment of up to 100 products in up to 20 categories, `by_attribute: true` adds each attribute's values per Match Quality across all its categories.
+- **Per attribute.** For an Enrichment of up to 100 products in up to 20 categories, `by_attribute: true` adds each attribute's values filled, empty and in conflict across all its categories.
 - **Finding products.** To find a product the user names, pass `title_contains` or `code_contains`, the grid's own Product and Code search; the view opens searched. Several products the user named are one call with `product_ids`; its view moves between their review pages.
 - **One product, one value.** `product_id` reads one product's review page, and adding `attribute` reads one value's evidence: the sources behind it and the competing values (the view opens on that value). Those answers carry the review page's own fields, which are for you to read: tell the user what they mean (which sources back a value, what else was found, why it was chosen), never their field names. `attribute` takes the attribute's exact name; `search-catalog` with `entity: attribute` finds it by at least 3 characters of its name or code in the taxonomy, with whether it is required and, for a list, how many values it allows and the resource that lists them (`allowed_values_uri`).
 

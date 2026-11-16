@@ -1,6 +1,6 @@
 ---
 name: naratix-attributes
-description: Enriching product attributes in Naratix — filling a taxonomy's attribute values (colour, size, capacity…). Use when the user wants attributes filled or enriched, asks how an attribute enrichment is going or why products failed, asks what the results hold or what Match Quality means, wants enriched values reviewed, approved, reset or enriched again, wants to try a few products first or says values come out wrong, or wants an attribute's description or an enrichment instruction changed, or the values translated.
+description: Enriching product attributes in Naratix — filling a taxonomy's attribute values (colour, size, capacity…). Use when the user wants attributes filled or enriched, asks how an attribute enrichment is going or why products failed, asks what the results hold, wants enriched values reviewed, approved, reset or enriched again, wants to try a few products first or says values come out wrong, or wants an attribute's description or an enrichment instruction changed, or the values translated.
 ---
 
 # Naratix attributes
@@ -36,7 +36,7 @@ One product's value set by hand: `edit-product` (the `naratix-operator` skill's 
 A **trial** enriches a few products, shows where attributes come out wrong, and lets you steer before the rest runs.
 
 1. **Trial:** pick 5 to 10 products spread over the selection's largest categories (`list-products` with the user's filters) and launch them as `product_ids` into a new Enrichment.
-2. **Read it** once it has finished: `show-mining` with the `enrichment_id` and `by_attribute: true` lists each attribute's values per Match Quality across the trial's categories, the worst first. The attributes to steer have many AI-matched values, values found that match no allowed option (`unplaced`), empty values, conflicts, or values a check or a marketplace flagged (`flagged`); what the user corrected in the view counts too. Read one value's evidence only where the summary leaves you guessing or the user asks, as the `naratix-operator` skill's *One card per question* says.
+2. **Read it** once it has finished: `show-mining` with the `enrichment_id` and `by_attribute: true` lists each attribute's values filled, empty and in conflict across the trial's categories, the worst first. The attributes to steer have values found that match no allowed option (`unplaced`), empty values, conflicts, or values a check or a marketplace flagged (`flagged`); what the user corrected in the view counts too. Read one value's evidence only where the summary leaves you guessing or the user asks, as the `naratix-operator` skill's *One card per question* says.
 3. **See what steers it already:** `search-catalog` with `entity: attribute` and the category's `category_id` lists that category's attributes with their descriptions, and the taxonomy's saved notes per step; `entity: category` shows each category's own notes.
 4. **Steer it:** decide where the instruction belongs yourself, by the table below, and tell the user in plain words what you will save and where. Write the text by [Writing instructions](../naratix-operator/references/writing-instructions.md). Call `save-enrichment-instructions` without `confirm`: the card shows the text now and after, and where text is already there the user picks whether yours is added or replaces it; without the card, ask them. Save with `confirm: true` after their yes. Tell the user they can add standing instructions for their own preferences at any time.
 5. **Run the trial again** once it has finished (`list-runs`): `launch-mining` with `enrichment_id` and `add_to_enrichment_id` both set to the trial and `replace_existing: true`. Without it the values already there stay and nothing changes. It also rewrites values the user corrected by hand in the trial: say so before the go-ahead. An identical launch is refused while the earlier one's Enrichment still runs.
@@ -75,15 +75,9 @@ To retry failures, use `control-enrichment` with `action: retry_failures`, as th
 
 ## Read the results
 
-Each run's `match_quality` counts how its attributes got their values:
+Each run's `conflicts` counts the values its sources disagreed on (cross-check only): held back for the user to settle, or one of them chosen. A value is otherwise filled or empty: an empty one had no source give it, or what was found fits no allowed value or failed a check. Speak of each value as filled, empty or in conflict.
 
-- **exact** — matched one of the attribute's allowed values directly;
-- **ai_matched** — the AI picked the allowed value closest to what the sources said;
-- **free_text** — the attribute takes any text, so the found value is kept as written;
-- **conflict** — cross-check only: the sources disagreed;
-- **empty** — no value was kept: no source gave one, or what was found fits no allowed value or failed a check.
-
-Apart from Match Quality, `provenance` says how far a value's sources confirm it: `show-product` gives it per value, and the `provenance` filter (`unconfirmed_facts`, `deduced`, …) selects products to look at or enrich again.
+`provenance` says how far a value's sources confirm it: `show-product` gives it per value, and the `provenance` filter (`unconfirmed_facts`, `deduced`, …) selects products to look at or enrich again.
 
 To read the results with the user, find a product or a value in them, or settle them (approving, **Enrich again**, **Reset values**), read [references/review-grid.md](references/review-grid.md): `show-mining` with the `enrichment_id` reads them as the review grid shows them.
 

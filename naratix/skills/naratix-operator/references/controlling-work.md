@@ -2,7 +2,7 @@
 
 ## Following work
 
-Launches join an **Enrichment**, one **Batch** per launch; `list-runs` with `kind: enrichment` reads its counts and its Batches. A card follows it: end your turn and read its context on the next one. With no card, follow it with `list-runs` at a sensible interval. With the chat closed, the user gets one email once everything in an Enrichment you started has finished.
+Launches join an **Enrichment**, one **Batch** per launch; `list-runs` with `kind: enrichment` reads its counts and its Batches. A card follows it: end your turn and read its context on the next one. With no card, follow it with `list-runs` at a sensible interval.
 
 When an attribute Enrichment finishes, check its products without asking, as the `naratix-attributes` skill's *Follow the run* says.
 

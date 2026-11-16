@@ -8,7 +8,7 @@ Offer one when the user's words or the results point to it, and ask before the s
 |---|---|---|
 | The products are hard to find on the web: failures say nothing usable was found, or few values come from web pages | a stronger `search_mode`: `aggressive` (title, brand and code variants), `ean` (the barcode first, for products with barcodes), `translated` (titles written in another language than the taxonomy's) | It uses more credits: past 2 searches a product, about one more credit for every two more searches. |
 | The user knows which searches find the products | `search_mode: custom` with `search_template`, `\|` between searches | Each search past 2 uses more credits. A key no product carries is refused. |
-| Google finds nothing usable | `search_engine: bing` | Slower. |
+| The usual search engine finds nothing usable | `search_engine: bing`, the alternative engine, for this run. For every run, the shop's owner picks **Alternative** under **Web search engine** in **Shop settings** | Slower. |
 | Pages come from the wrong sites, or one site is trusted | `preferred_sites`, `blocked_sites` | Products with saved web pages reuse them; blocked sites still apply to those. |
 | The allowed options changed and the values already found should be matched again | `rematch_only: true`, alone: no `look_in`, `find_photos` or search settings | It reads no source, so it uses fewer credits. |
 | With `method: cross_check`, no value may be invented | `require_quotes: true` | Fewer attributes get filled. |

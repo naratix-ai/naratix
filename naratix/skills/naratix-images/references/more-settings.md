@@ -14,7 +14,7 @@ Offer one when the user's words or the shop's photos point to it, and ask before
 | Some photos show another variant, or the main photo is the best | `reference_photos` (`primary`, `first_2`, `first_4` by default, `all`) | |
 | The shop has only infographics or composites of a product | `recreate_from_marketing: true` | The result is generated, checked like any generated photo. |
 | A concern the check should catch (a watermark, a sticker) | `check_for`, in their words | It adds checks, never removes one. |
-| Find returns little or nothing: products hard to find on the web | `search_mode`: `aggressive` (more searches and pages), `ean` (the barcode first, for products with barcodes), `translated` (titles in another language than the shop's); or `search_engine: bing` when Google finds nothing usable | Bing is slower. Products with saved web pages reuse them. |
+| Find returns little or nothing: products hard to find on the web | `search_mode`: `aggressive` (more searches and pages), `ean` (the barcode first, for products with barcodes), `translated` (titles in another language than the shop's); or `search_engine: bing`, the alternative engine, when the usual one finds nothing usable (for every run, the shop's owner picks **Alternative** under **Web search engine** in **Shop settings**) | The alternative engine is slower. Products with saved web pages reuse them. |
 | They know where good photos are, or a site's photos are poor | `preferred_sites`, `blocked_sites` | |
 | Found photos are lifestyle shots with much background | `max_background` (a percentage) | |
 
