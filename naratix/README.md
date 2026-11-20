@@ -56,7 +56,7 @@ Your app may also list guided starts as prompts or slash commands: *Set up my sh
 - **You say yes first.** Every launch and every push waits for your go-ahead.
 - **Your shops only.** The assistant works signed in as you, only in the shops you can open, with your role's permissions.
 - **Keys never enter the chat.** The shop owner types channel keys (Mirakl, VTEX) into Naratix's own form: in the chat where your app shows it, otherwise on the connector's page in Naratix. They go straight to Naratix and are stored encrypted. Your AI assistant never sees them. Never paste a key into a message.
-- **What the plugin holds.** Its skills are instructions your assistant reads; they send nothing: `naratix-operator` for the whole journey, plus `naratix-imports`, `naratix-taxonomy`, `naratix-categories`, `naratix-attributes`, `naratix-images`, `naratix-channels`, `naratix-content`, `naratix-quality` and `naratix-computed`. The Naratix connection, `https://api.naratix.ai/mcp`, carries your requests to Naratix.
+- **What the plugin holds.** Its skills are instructions your assistant reads; they send nothing: `naratix-operator` for the whole journey, plus `naratix-imports`, `naratix-taxonomy`, `naratix-categories`, `naratix-attributes`, `naratix-images`, `naratix-channels`, `naratix-content`, `naratix-quality`, `naratix-computed` and `naratix-insights`. The Naratix connection, `https://api.naratix.ai/mcp`, carries your requests to Naratix.
 
 ## Help
 
