@@ -5,7 +5,7 @@ description: What a shop's own numbers say to do in Naratix — its store search
 
 # Naratix insights
 
-An **insight** is something a connected source says to do, with the traffic at stake: a search the store finds nothing for, a category viewed and not bought, product pages just off Google's first page. The shop's Insights page lists them; in the chat you read the same list, open one with everything behind it, read the numbers themselves, and press what the page presses. The user owns this: insights and their numbers are the shop owner's to read and act on, as in the app.
+An **insight** is something a connected source says to do, with the traffic at stake: a search the store finds nothing for, a category viewed and not bought, products Google shows just below its top results. The shop's Insights page lists them; in the chat you read the same list, open one with everything behind it, read the numbers themselves, and press what the page presses. The user owns this: insights and their numbers are the shop owner's to read and act on, as in the app.
 
 The go-ahead and following background work go by the `naratix-operator` skill; reviewing what a run wrote goes by the skill of its kind (`naratix-attributes`, `naratix-content`). The guided starter *Act on my insights* walks this skill's order.
 
@@ -23,7 +23,10 @@ The go-ahead and following background work go by the `naratix-operator` skill; r
 Reason across sources; that is where the chat sees more than one page:
 
 - A search the store finds nothing for that Google shows the shop's pages for is demand the shop already meets on the web: fix the store's search first (synonyms, search words, titles).
-- A category that does not convert whose pages sit close to Google's first page: better data and text on its products serve both.
+- A category that does not convert whose products sit just below Google's top results: better data and text on its products serve both.
+- A category that does not convert is judged on all its views; its enrichment reaches the products listed (`thin_views` of `views`). Say that share before proposing it.
+- A title word listed in a product's `unconfirmed` is in neither its description nor its attributes. Read the product (`show-product`) and judge: a word that names the same thing in shoppers' words belongs in the title; a word that states something the product is not does not.
+- A category page whose impressions are mostly one search is a question about that search: does the page answer it? A search in another language or for another thing is no reason to rewrite the description.
 - A product that sells for the few views it gets is worth showing more: SEO text, a title in the words shoppers use.
 - A search for the store's own name, an order number or a delivery question says nothing about a category page or a product.
 - Small counts are noise: a rise from 3 to 9, a category with a few dozen views. The thresholds exist for that; say when a figure is too small to mean anything.
